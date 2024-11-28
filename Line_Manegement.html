@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Line Management</title>
+    <link rel="stylesheet" href="line_management.css">
+    <script src="line_management.js" defer></script>
+</head>
+<body>
+    <header>
+        <div class="logo">AMANCOM</div>
+        <nav>
+            <ul>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="line_management.html" class="active">Line Management</a></li>
+                <li><a href="customer_management.html">Customer Management</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Line Management</h2>
+
+        <!-- Tabs Navigation -->
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="view-lines">View Lines</button>
+            <button class="tab-btn" data-tab="add-line">Add Line</button>
+            <button class="tab-btn" data-tab="edit-line">Edit Line</button>
+            <button class="tab-btn" data-tab="revert-line">Revert Sold Line</button>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="tab-content active" id="view-lines">
+            <h3>View Lines</h3>
+            <table id="lines-table">
+                <thead>
+                    <tr>
+                        <th>SIM num</th>
+                        <th>Serial Number</th>
+                        <th>Type</th>
+                        <th>Company Code</th>
+                        <th>Price</th>
+                        <th>Service Provider</th>
+                        <th>Sale Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>001</td>
+                        <td>SN12345</td>
+                        <td>Voice</td>
+                        <td>Cottonile.</td>
+                        <td>$10</td>
+                        <td>Vodafone</td>
+                        <td>Available</td>
+                    </tr>
+                    <tr>
+                        <td>002</td>
+                        <td>SN54321</td>
+                        <td>Data</td>
+                        <td>Data Networks</td>
+                        <td>$25</td>
+                        <td>Orange</td>
+                        <td>Sold</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="tab-content" id="add-line">
+            <h3>Add New Line</h3>
+            <form id="add-line-form">
+                <label for="sim-num">SIM Number:</label>
+                <input type="text" id="sim-num" name="sim-num" required>
+                
+                <label for="serial-number">Serial Number:</label>
+                <input type="text" id="serial-number" name="serial-number" required>
+                
+                <label for="type">Type:</label>
+                <select id="type" name="type">
+                    <option value="voice">Voice</option>
+                    <option value="data">Data</option>
+                </select>
+                
+                <label for="company">Company:</label>
+                <input type="text" id="company" name="company" required>
+                
+                <label for="price">Price:</label>
+                <input type="number" id="price" name="price" required>
+                
+                <label for="service-provider">Service Provider:</label>
+                <input type="text" id="service-provider" name="service-provider" required>
+                
+                <button type="button" id="add-line-btn">Add Line</button>
+            </form>
+        </div>
+
+        <div class="tab-content" id="edit-line">
+            <h3>Edit Line</h3>
+            <form id="edit-line-form">
+                <label for="edit-sim-num">SIM Number:</label>
+                <input type="text" id="edit-sim-num" name="edit-sim-num" readonly>
+                
+                <label for="edit-serial-number">Serial Number:</label>
+                <input type="text" id="edit-serial-number" name="edit-serial-number" required>
+                
+                <label for="edit-type">Type:</label>
+                <select id="edit-type" name="edit-type">
+                    <option value="voice">Voice</option>
+                    <option value="data">Data</option>
+                </select>
+                
+                <label for="edit-company">Company:</label>
+                <input type="text" id="edit-company" name="edit-company" required>
+                
+                <label for="edit-price">Price:</label>
+                <input type="number" id="edit-price" name="edit-price" required>
+                
+                <label for="edit-service-provider">Service Provider:</label>
+                <input type="text" id="edit-service-provider" name="edit-service-provider" required>
+                
+                <button type="button" id="edit-line-btn">Save Changes</button>
+            </form>
+        </div>
+
+        <div class="tab-content" id="revert-line">
+            <h3>Revert Sold Line</h3>
+            <form id="revert-line-form">
+                <label for="revert-sim-num">SIM Number:</label>
+                <input type="text" id="revert-sim-num" name="revert-sim-num" required>
+                <button type="button" id="revert-line-btn">Revert to Available</button>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Amancom. All rights reserved.</p>
+        <p>Contact us: amancom@amancom.com</p>
+    </footer>
+
+    <script src="line_management.js"></script>
+</body>
+</html>

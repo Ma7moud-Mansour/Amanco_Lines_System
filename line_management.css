@@ -1,0 +1,162 @@
+/* General Reset */
+body, h2, p, ul, li {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+}
+
+/* Header Styles */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #c3e04d;
+    padding: 10px 20px;
+}
+
+header .logo {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+header nav ul {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+}
+
+header nav a {
+    text-decoration: none;
+    color: black;
+}
+
+header nav a.active {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+/* Main Section Styles */
+main {
+    padding: 20px;
+    flex: 1;
+}
+
+h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Tabs Section */
+.tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.tab-btn {
+    padding: 10px 20px;
+    border: none;
+    background-color: #ddd;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.tab-btn.active {
+    background-color: #c3e04d;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Table Styles */
+table {
+    width: 100%;
+    /* border-collapse: collapse; */
+    margin-top: 20px;
+}
+
+thead {
+    background-color: #c3e04d;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+    border-radius: 8px;
+
+}
+
+th {
+    font-weight: bold;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Form Styles */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+form label {
+    font-weight: bold;
+    color: #555;
+}
+
+form input, form select {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    width: 100%;
+}
+
+button {
+    background-color: #c3e04d;
+    border: none;
+    padding: 10px;
+    border-radius: 15px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #a9cc3f;
+}
+
+/* Footer Styles */
+footer {
+    text-align: center;
+    background-color: #f9f9f9;
+    padding: 20px;
+    font-size: 14px;
+    color: #555;
+}
