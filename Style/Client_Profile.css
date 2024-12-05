@@ -1,0 +1,102 @@
+/* General Styles */
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+}
+
+.container {
+  width: 90%;
+  margin: auto;
+  background-color: white;
+  border-radius: 10px;
+  padding: 10px 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Header Styles */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+  font-size: 24px;
+  margin: 0;
+}
+
+header nav a {
+  text-decoration: none;
+  color: #333;
+  margin: 0 10px;
+}
+
+header nav .active {
+  color: #c4d82c;
+  font-weight: bold;
+}
+
+/* Main Content */
+main {
+  margin-top: 20px;
+}
+
+.profile {
+  margin-top: 10px;
+}
+
+section {
+  margin-bottom: 20px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+/* Details Section */
+.details p {
+  margin: 10px 0;
+  font-size: 16px;
+}
+
+/* Table Styles */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  text-align: left;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #c4d82c;
+  color: white;
+}
+
+td {
+  font-size: 14px;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 10px;
+  font-size: 14px;
+  background-color: #f9f9f9;
+  color: #555;
+  border-top: 1px solid #ddd;
+}

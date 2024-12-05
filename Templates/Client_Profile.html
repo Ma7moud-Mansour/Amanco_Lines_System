@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Profile</title>
+    <link rel="stylesheet" href="../Style/Client_Profile.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>AMANCOM</h1>
+            <nav>
+                <a href="Dashboard.html">Dashboard</a>
+                <a href="Customer_Management.html" class="active">Customer Management</a>
+                <a href="Line_Management.html">Line Management</a>
+            </nav>
+        </header>
+
+        <!-- Main Content -->
+        <main>
+            <div class="profile">
+                <!-- Client Details -->
+                <section class="client-details">
+                    <h2>Client Profile</h2>
+                    <div class="details">
+                        <p><strong>Client Name:</strong> <span id="client-name">John Doe</span></p>
+                        <p><strong>Type:</strong> <span id="client-type">Small Client</span></p>
+                        <p><strong>SO Code:</strong> <span id="so-code">SO12345</span></p>
+                        <p><strong>Phone Numbers:</strong> <span id="phone-numbers">+201001234567, +201112345678</span></p>
+                    </div>
+                </section>
+
+                <!-- SIM Cards List -->
+                <section class="sim-list">
+                    <h2>SIM Cards</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>SIM Number</th>
+                                <th>Serial Number</th>
+                                <th>Sale Date</th>
+                                <th>Device Serial</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>0123456789</td>
+                                <td>SN123456</td>
+                                <td>2023-11-25</td>
+                                <td>DS00123</td>
+                            </tr>
+                            <tr>
+                                <td>0987654321</td>
+                                <td>SN987654</td>
+                                <td>2023-11-30</td>
+                                <td>-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Devices List -->
+                <section class="device-list">
+                    <h2>Devices</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Device Serial</th>
+                                <th>Device Type</th>
+                                <th>Server Name</th>
+                                <th>Subscription Date</th>
+                                <th>Remaning Days</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>DS00123</td>
+                                <td>GPS Tracker</td>
+                                <td>Server 01</td>
+                                <td>2023-11-25</td>
+                                <td>264</td>
+                              </tr>
+                              <tr>
+                                <td>DS00456</td>
+                                <td>Vehicle Monitor</td>
+                                <td>Server 02</td>
+                                <td>2023-12-01</td>
+                                <td>97</td>
+                            </tr>
+                              <tr>
+                                <td>DS00434</td>
+                                <td>Vehicle Monitor</td>
+                                <td>Server 02</td>
+                                <td>2023-12-01</td>
+                                <td>Life Time</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2023 Amancom. All rights reserved.</p>
+            <p>Contact us: amancom@amancom.com</p>
+        </footer>
+    </div>
+</body>
+</html>
