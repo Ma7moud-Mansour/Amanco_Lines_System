@@ -105,7 +105,12 @@ main {
 .customer-form .customer-type {
     display: flex;
 }
-
+.choose-server{
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 15px;
+  width: 100%;
+}
 /* All Customers Section */
 .all-customers {
     background: #fff;
