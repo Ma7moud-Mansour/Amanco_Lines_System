@@ -50,10 +50,10 @@
             <h2>Add/Update Customers</h2>
             <form id="customerForm">
               <label for="name">Name</label>
-              <input type="text" id="name" name="name" />
+              <input type="text" id="name" name="name" required />
 
               <label for="odoo_so">Odoo SO</label>
-              <input type="text" id="odoo_so" name="odoo_so" />
+              <input type="text" id="odoo_so" name="odoo_so" required />
 
               <label>Customer Type</label>
               <div class="customer-type">
@@ -74,16 +74,12 @@
               </div>
               <div class="choose-server">
                 <label for="server">Associated Server</label>
-                <select  id="server_list"
-                name="server">
-                
-
-                  <option value="itrack"> itrack</option>
+                <select id="server_list" name="server">
+                  <option value="itrack">itrack</option>
                   <option value="fms">fms</option>
                   <option value="track solid">track solid</option>
                   <option value="pro track ">pro track</option>
                   <option value="whats gps">whats gps</option>
-                  
                 </select>
               </div>
               <button type="button" id="addCustomer">Add Customer</button>
