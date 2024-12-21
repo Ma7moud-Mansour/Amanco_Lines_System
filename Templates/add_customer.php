@@ -128,6 +128,9 @@ $conn->close();
               <label for="sim_serial">SIM Serial Number</label>
               <input type="text" id="sim_serial" name="sim_serial" required />
 
+              <label for="phone_number">Phone Number</label>
+              <input type="text" id="phone_number" name="phone_number" required />
+
               <label>Customer Type</label>
               <div class="customer-type">
                   <input type="radio" id="large" name="type" value="Large Company" />
@@ -135,6 +138,7 @@ $conn->close();
                   <input type="radio" id="small" name="type" value="Small Client" />
                   <label for="small">Small Client</label>
               </div>
+              
 
               <div class="choose-server">
                   <label for="server">Associated Server</label>
@@ -147,8 +151,6 @@ $conn->close();
                   </select>
               </div>
 
-              <label for="phone_number">Phone Number</label>
-              <input type="text" id="phone_number" name="phone_number" required />
 
               <button type="submit" name="add_customer">Add Customer</button>
             </form>
