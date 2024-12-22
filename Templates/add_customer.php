@@ -125,8 +125,8 @@ $conn->close();
               <label for="odoo_so">Odoo SO</label>
               <input type="text" id="odoo_so" name="odoo_so" required />
 
-              <label for="sim_serial">SIM Serial Number</label>
-              <input type="text" id="sim_serial" name="sim_serial" required />
+              <!-- <label for="sim_serial">SIM Serial Number</label>
+              <input type="text" id="sim_serial" name="sim_serial" required /> -->
 
               <label for="phone_number">Phone Number</label>
               <input type="text" id="phone_number" name="phone_number" required />

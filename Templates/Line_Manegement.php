@@ -8,22 +8,35 @@ if ($conn->connect_error) {
 }
 
 // إنشاء استعلام SQL الأساسي
-$query = "SELECT * FROM `sim_card` WHERE 1=1";
+$query = "
+    SELECT 
+        SIM_num,
+        Serial_no,
+        Type,
+        company_name,
+        Price,
+        Service_Provider,
+        Is_Sold
+    FROM 
+        sim_card
+    WHERE 1=1
+";
 
 // معالجة الفلاتر
 if (isset($_GET['status']) && $_GET['status'] !== 'all') {
     $status = $conn->real_escape_string($_GET['status']);
-    $query .= " AND `sale_status` = '$status'";
+    $statusValue = $status === 'sold' ? '1' : '0'; // '1' يعني مباعة و '0' يعني متاحة
+    $query .= " AND `Is_Sold` = '$statusValue'";
 }
 
 if (isset($_GET['type']) && $_GET['type'] !== 'all') {
     $type = $conn->real_escape_string($_GET['type']);
-    $query .= " AND `type` = '$type'";
+    $query .= " AND `Type` = '$type'";
 }
 
-if (isset($_GET['company-code']) && !empty($_GET['company-code'])) {
-    $companyCode = $conn->real_escape_string($_GET['company-code']);
-    $query .= " AND `company_code` LIKE '%$companyCode%'";
+if (isset($_GET['company-name']) && !empty($_GET['company-name'])) {
+    $companyName = $conn->real_escape_string($_GET['company-name']);
+    $query .= " AND `company_name` LIKE '%$companyName%'";
 }
 
 // تنفيذ الاستعلام
@@ -40,7 +53,7 @@ if (!$result) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>InventoryTrackPro</title>
+    <title>AMANCO</title>
     <link rel="stylesheet" href="../Style/lines_style.css">
     <script src="../JS/Add_customer.js" defer></script>
 </head>
@@ -50,8 +63,8 @@ if (!$result) {
         <nav>
             <ul>
                 <li><a href="#">Dashboard</a></li>
-                <li><a href="Line_Manegement.php">Line Management</a></li>
-                <li><a href="#">Customer Management</a></li>
+                <li><a href="Line_Manegement.php" class="active" >Line Management</a></li>
+                <li><a href="add_customer.php">Customer Management</a></li>
             </ul>
         </nav>
     </header>
@@ -79,8 +92,8 @@ if (!$result) {
                 </div>
 
                 <div>
-                    <label for="company-code">Search by Company Code:</label>
-                    <input type="text" id="company-code" name="company-code" placeholder="Enter Company Code">
+                    <label for="company-name">Search by Company Name:</label>
+                    <input type="text" id="company-name" name="company-name" placeholder="Enter Company Name">
                 </div>
 
                 <button type="submit">Apply Filters</button>
@@ -95,7 +108,7 @@ if (!$result) {
                         <th>SIM num</th>
                         <th>Serial Number</th>
                         <th>Type</th>
-                        <th>Company Code</th>
+                        <th>Company Name</th>
                         <th>Price</th>
                         <th>Service Provider</th>
                         <th>Sale Status</th>
@@ -107,10 +120,10 @@ if (!$result) {
                             <td><?= htmlspecialchars($row['SIM_num']) ?></td>
                             <td><?= htmlspecialchars($row['Serial_no']) ?></td>
                             <td><?= htmlspecialchars($row['Type']) ?></td>
-                            <td><?= htmlspecialchars($row['company_code']) ?></td>
+                            <td><?= htmlspecialchars($row['company_name']) ?></td>
                             <td><?= htmlspecialchars($row['Price']) ?></td>
                             <td><?= htmlspecialchars($row['Service_Provider']) ?></td>
-                            <td><?= htmlspecialchars($row['Is_Sold']) ?></td>
+                            <td><?= htmlspecialchars($row['Is_Sold'] ) ?></td>
                         </tr>
                     <?php endwhile; ?>
                 </tbody>
@@ -120,7 +133,7 @@ if (!$result) {
 
     <footer>
         <p>&copy; 2023 AMANCOM. All rights reserved.</p>
-        <p>Contact us: amancmo@amancom.com</p>
+        <p>Contact us: amancom@amancom.com</p>
     </footer>
 
     <?php
