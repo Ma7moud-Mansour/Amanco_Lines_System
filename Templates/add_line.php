@@ -92,9 +92,9 @@ $conn->close();
 <header>
     <h1>Add New Line</h1>
     <nav>
-        <a href="#">Home</a>
+        <a href="Dashboard.php">Dashboard</a>
         <a href="#" class="active">Add Line</a>
-        <a href="#">View Inventory</a>
+        <a href="Line_Manegement.php">Lines Inventory</a>
     </nav>
 </header>
 <div class="container">

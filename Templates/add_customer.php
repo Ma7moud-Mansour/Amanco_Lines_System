@@ -99,8 +99,8 @@ $conn->close();
       <header>
         <h1>AMANCOM</h1>
         <nav>
-          <a href="#">Dashboard</a>
-          <a href="#" class="active">Customer Management</a>
+          <a href="Dashboard.php">Dashboard</a>
+          <a href="#" class="active">Add Customer</a>
           <a href="Line_Manegement.php">Line Management</a>
         </nav>
       </header>

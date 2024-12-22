@@ -62,9 +62,9 @@ if (!$result) {
         <div class="logo">AMANCOM</div>
         <nav>
             <ul>
-                <li><a href="#">Dashboard</a></li>
-                <li><a href="Line_Manegement.php" class="active" >Line Management</a></li>
-                <li><a href="add_customer.php">Customer Management</a></li>
+                <li><a href="Dashboard.php">Dashboard</a></li>
+                <li><a href="Line_Manegement.php" class="active" >Line Inventory</a></li>
+                <li><a href="add_customer.php">Add Customer</a></li>
             </ul>
         </nav>
     </header>

@@ -11,7 +11,7 @@ if ($conn->connect_error) {
 $client_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
 // استعلام لجلب بيانات العميل
-$client_query = "SELECT * FROM clients WHERE id = $client_id";
+$client_query = "SELECT * FROM client_company WHERE Code = $client_id";
 $client_result = $conn->query($client_query);
 
 // التحقق من وجود العميل
@@ -22,13 +22,13 @@ if ($client_result->num_rows > 0) {
 }
 
 // استعلام لجلب الشرايح المرتبطة بالعميل
-$sims_query = "SELECT * FROM sim_cards WHERE client_id = $client_id";
+$sims_query = "SELECT * FROM sim_card WHERE Serial_no = $client_id";
 $sims_result = $conn->query($sims_query);
 
 // استعلام لجلب الأجهزة المرتبطة بالعميل
-$devices_query = "SELECT devices.*, sim_cards.sim_number FROM devices 
-                  LEFT JOIN sim_cards ON devices.sim_id = sim_cards.id 
-                  WHERE devices.client_id = $client_id";
+$devices_query = "SELECT device.*, sim_card.SIM_num FROM device 
+                  LEFT JOIN sim_card ON device.SIM_Serial_no = sim_card.Serial_no 
+                  WHERE device.Serial_no = $client_id";
 $devices_result = $conn->query($devices_query);
 ?>
 <!DOCTYPE html>
@@ -45,9 +45,9 @@ $devices_result = $conn->query($devices_query);
         <header>
             <h1>AMANCOM</h1>
             <nav>
-                <a href="Dashboard.html">Dashboard</a>
-                <a href="Customer_Management.html" class="active">Customer Management</a>
-                <a href="Line_Management.html">Line Management</a>
+                <a href="Dashboard.php">Dashboard</a>
+                <a href="Customer_Management.php" class="active">Customer Management</a>
+                <a href="Line_Management.php">Line Management</a>
             </nav>
         </header>
 
@@ -58,10 +58,10 @@ $devices_result = $conn->query($devices_query);
                 <section class="client-details">
                     <h2>Client Profile</h2>
                     <div class="details">
-                        <p><strong>Client Name:</strong> <?php echo $client['name']; ?></p>
-                        <p><strong>Type:</strong> <?php echo $client['type']; ?></p>
-                        <p><strong>SO Code:</strong> <?php echo $client['so_code']; ?></p>
-                        <p><strong>Client Numbers:</strong> <?php echo $client['phone_numbers']; ?></p>
+                        <p><strong>Client Name:</strong> <?php echo $client['Name']; ?></p>
+                        <p><strong>Type:</strong> <?php echo $client['Class']; ?></p>
+                        <p><strong>SO Code:</strong> <?php echo $client['Odoo_SO']; ?></p>
+                        <p><strong>Client Numbers:</strong> <?php echo $client['Client_num']; ?></p>
                     </div>
                 </section>
 
@@ -80,8 +80,8 @@ $devices_result = $conn->query($devices_query);
                         <tbody>
                             <?php while ($sim = $sims_result->fetch_assoc()): ?>
                                 <tr>
-                                    <td><?php echo $sim['sim_number']; ?></td>
-                                    <td><?php echo $sim['serial_number']; ?></td>
+                                    <td><?php echo $sim['SIM_num']; ?></td>
+                                    <td><?php echo $sim['Serial_no']; ?></td>
                                     <td><?php echo $sim['sale_date']; ?></td>
                                     <td><?php echo $sim['device_serial'] ?: '-'; ?></td>
                                 </tr>
