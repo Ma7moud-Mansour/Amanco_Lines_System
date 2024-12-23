@@ -14,7 +14,7 @@ if ($conn->connect_error) {
 
 // استعلامات الإحصائيات
 $sim_count_query = "SELECT COUNT(*) FROM sim_card WHERE Is_Sold = 'sold'";
-$stored_sims_query = "SELECT COUNT(*) FROM sim_card WHERE Is_Sold = 'stored'";
+$stored_sims_query = "SELECT COUNT(*) FROM sim_card WHERE Is_Sold = 'Available'";
 $company_count_query = "SELECT COUNT(*) FROM client_company";
 
 // تنفيذ الاستعلامات
@@ -52,6 +52,55 @@ $conn->close();
 <title>Dashboard</title>
 <link rel="stylesheet" href="../Style/Dashboard.css" />
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+/* Statistics Section */
+.statistics {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    gap: 20px;
+}
+
+.stat {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.stat:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.stat h2 {
+    margin: 10px 0;
+    font-size: 2.5em;
+    color: #4CAF50;
+}
+
+.stat p {
+    margin: 0;
+    font-size: 1.2em;
+    color: #777;
+}
+
+.icon {
+    margin-bottom: 15px;
+}
+
+.icon img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+}
+.sName {
+    color:black;
+}
+</style>
 </head>
 <body>
 <header>
@@ -60,7 +109,7 @@ $conn->close();
         <a href="#" class="active">Dashboard</a>
         <a href="add_line.php">Add Line</a>
         <a href="add_customer.php">Add Customer</a>
-        <a href="Line_Manegement.php" >Line Inventory</a>
+        <a href="Line_Manegement.php">Line Inventory</a>
     </nav>
 </header>
 
@@ -78,7 +127,6 @@ $conn->close();
     <!-- Search Results Section -->
     <div class="search-results">
         <?php if (!empty($search_results)): ?>
-
             <div class="tab-content active" id="companies">
                 <table>
                     <thead>
@@ -91,7 +139,7 @@ $conn->close();
                         <?php foreach ($search_results as $result): ?>
                             <tr>
                                 <td><?php echo $result['Code']; ?></td>
-                                <td><a href="Client_Profile.php?id=<?php echo $result['Code']; ?>"><?php echo $result['Name']; ?></a></td>
+                                <td><a class="sName" href="Client_Profile.php?id=<?php echo $result['Code']; ?>"><?php echo $result['Name']; ?></a></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -105,14 +153,23 @@ $conn->close();
     <!-- Statistics Section -->
     <div class="statistics">
         <div class="stat">
+            <div class="icon">
+                <img src="icons/sold-sim-icon.png" alt="Sold SIMs" />
+            </div>
             <h2><?php echo $sim_count; ?></h2>
             <p>Total SIMs Sold</p>
         </div>
         <div class="stat">
+            <div class="icon">
+                <img src="icons/stored-sim-icon.png" alt="Stored SIMs" />
+            </div>
             <h2><?php echo $stored_sims; ?></h2>
             <p>Total SIMs Stored</p>
         </div>
         <div class="stat">
+            <div class="icon">
+                <img src="icons/company-icon.png" alt="Companies" />
+            </div>
             <h2><?php echo $company_count; ?></h2>
             <p>Total Companies</p>
         </div>
@@ -173,18 +230,7 @@ $conn->close();
         }
     });
 
-    // Tabs functionality
-    const tabBtns = document.querySelectorAll('.tab-btn');
-    const tabContents = document.querySelectorAll('.tab-content');
-
-    tabBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            tabBtns.forEach(b => b.classList.remove('active'));
-            tabContents.forEach(tc => tc.classList.remove('active'));
-            btn.classList.add('active');
-            document.getElementById(btn.dataset.tab).classList.add('active');
-        });
-    });
+    
 </script>
 
 </body>

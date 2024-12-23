@@ -1,18 +1,15 @@
 <?php
 $servername = "localhost";
 $username = "root";
-$password = ""; // كلمة مرور المستخدم root إذا كانت فارغة
+$password = ""; 
 $dbname = "amancom_db";
 
-// إنشاء الاتصال
-$conn = new mysqli($servername, $username, $password, $dbname);
 
-// التحقق من الاتصال
+$conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// معالجة إضافة العميل
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_customer'])) {
     $name = $_POST['name'];
     $odoo_so = $_POST['odoo_so'];
@@ -21,11 +18,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_customer'])) {
     $sim_serial = $_POST['sim_serial'];
     $phone_number = isset($_POST['phone_number']) ? $_POST['phone_number'] : null;
 
-    // تحقق من إدخال رقم الهاتف
+    // BE SURE THE NUMBER FILS ISN'T EMPTY
     if (empty($phone_number)) {
         $error_message = "Error: Phone Number is required.";
     } else {
-        // التحقق إذا كان السيريال موجودًا في جدول sim_inventory وأنه متاح
+        // CHECK IF THE SERIAL IS ALREADE EXIST
         $check_sim_query = "SELECT * FROM sim_inventory WHERE Serial_no = ?";
         $stmt = $conn->prepare($check_sim_query);
         $stmt->bind_param("s", $sim_serial);
@@ -35,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_customer'])) {
         if ($sim_result->num_rows === 0) {
             $error_message = "Error: SIM Serial Number does not exist or is not available in SIM Inventory.";
         } else {
-            // التحقق إذا كانت بيانات odoo موجودة، وإذا لم تكن، إدخالها
+            // ODOO SO
             $odoo_check_query = "SELECT * FROM odoo WHERE Odoo_SO = ?";
             $stmt = $conn->prepare($odoo_check_query);
             $stmt->bind_param("s", $odoo_so);
@@ -43,21 +40,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_customer'])) {
             $odoo_result = $stmt->get_result();
 
             if ($odoo_result->num_rows === 0) {
-                // إدراج بيانات جديدة في جدول odoo
+                // INSERT ODOO DETAILS
                 $insert_odoo_query = "INSERT INTO odoo (Odoo_SO) VALUES (?)";
                 $stmt = $conn->prepare($insert_odoo_query);
                 $stmt->bind_param("s", $odoo_so);
                 $stmt->execute();
             }
 
-            // إذا كان كل شيء صحيحًا، إدخال العميل
+            // IF EVERY THING IS GOOD
             $insert_query = "INSERT INTO client_company (Name, Odoo_SO, Class, Server_Name, SIM_Serial_no, Client_num) VALUES (?, ?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($insert_query);
             $stmt->bind_param("ssssss", $name, $odoo_so, $type, $server, $sim_serial, $phone_number);
 
             if ($stmt->execute()) {
                 $success_message = "Customer added successfully!";
-                // تحديث حالة السيريال في sim_inventory
+                // UPDATE 
                 $update_sim_query = "UPDATE sim_inventory SET status = 'assigned' WHERE Serial_no = ?";
                 $stmt = $conn->prepare($update_sim_query);
                 $stmt->bind_param("s", $sim_serial);
@@ -72,11 +69,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_customer'])) {
     }
 }
 
-// جلب جميع العملاء
+
 $query = "SELECT * FROM client_company";
 $result = $conn->query($query);
 
-// تأكد من غلق الاتصال بقاعدة البيانات في النهاية
 $conn->close();
 ?>
 

@@ -4,15 +4,13 @@ $username = "root";
 $password = "";
 $dbname = "amancom_db";
 
-// إنشاء الاتصال
-$conn = new mysqli($servername, $username, $password, $dbname);
 
-// التحقق من الاتصال
+$conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// معالجة إضافة الشريحة
+// ADD LINE
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_line'])) {
     $sim_number = $_POST['sim_number'];
     $serial_no = $_POST['serial_no'];
@@ -21,12 +19,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_line'])) {
     $company_name = $_POST['company_name'] ?? null;
     $type = $_POST['type'] ?? null;
 
-    // حقول التاريخ
+    // DATE
     $Year = $_POST['Year'] ?? null;
     $Month = $_POST['Month'] ?? null;
     $Day = $_POST['Day'] ?? null;
 
-    // التحقق من أن الرقم فريد
+    //  CHECK IF THE SIM NUM IS UNIEQ
     $check_sim_query = "SELECT * FROM sim_card WHERE SIM_num = ?";
     $stmt = $conn->prepare($check_sim_query);
     $stmt->bind_param("s", $sim_number);
@@ -40,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_line'])) {
     }
     $stmt->close();
 
-    // التحقق من أن السيريال فريد
+    // CHECK IF THE SERIAL-NO IS UNIEQ
     if (empty($error_message)) {
         $check_serial_query = "SELECT * FROM sim_card WHERE Serial_no = ?";
         $stmt = $conn->prepare($check_serial_query);
@@ -53,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_line'])) {
         $stmt->close();
     }
 
-    // إذا كان "Sell"، تحقق من الحقول الإضافية
+    // CHECK THE FIELDS IF USER CHOOSE "SELL"
     if ($storage_or_sell === 'sell' && empty($error_message)) {
         if (empty($Year) || empty($Month) || empty($Day)) {
             $error_message = "Please provide a valid sale date.";
@@ -74,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_line'])) {
         }
     }
 
-    // إذا لم يكن هناك أي خطأ، قم بالإدخال
+    // IF THERE IS NO ERROR GO INTO
     if (empty($error_message)) {
         if ($storage_or_sell === 'sell') {
             $stmt = $conn->prepare("INSERT INTO sim_card (SIM_num, Serial_no, Service_Provider, Is_Sold, Type, Company_Name, Year, Month, Day) VALUES (?, ?, ?, 'sold', ?, ?, ?, ?, ?)");

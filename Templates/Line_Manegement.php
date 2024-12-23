@@ -1,13 +1,10 @@
 <?php
-// الاتصال بقاعدة البيانات
 $conn = new mysqli('localhost', 'root', '', 'amancom_db');
-
-// التحقق من الاتصال
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// إنشاء استعلام SQL الأساسي
+
 $query = "
     SELECT 
         SIM_num,
@@ -25,9 +22,8 @@ $query = "
     WHERE 1=1
 ";
 
-// معالجة الفلاتر
 if (isset($_GET['Is_Sold']) && $_GET['Is_Sold'] !== 'all') {
-    $Is_Sold = strtolower($conn->real_escape_string($_GET['Is_Sold'])); // تحويل القيمة للحروف الصغيرة
+    $Is_Sold = strtolower($conn->real_escape_string($_GET['Is_Sold'])); 
     if ($Is_Sold === 'sold' || $Is_Sold === 'available') {
         $query .= " AND `Is_Sold` = '$Is_Sold'";
     }
@@ -43,10 +39,8 @@ if (isset($_GET['company-name']) && !empty($_GET['company-name'])) {
     $query .= " AND `company_name` LIKE '%$companyName%'";
 }
 
-// تنفيذ الاستعلام
 $result = $conn->query($query);
 
-// التحقق من النتيجة
 if (!$result) {
     die("Error in query: " . $conn->error);
 }
@@ -149,7 +143,6 @@ if (!$result) {
     </footer>
 
     <?php
-    // إغلاق الاتصال بقاعدة البيانات
     $conn->close();
     ?>
 </body>

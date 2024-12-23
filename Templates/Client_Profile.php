@@ -1,34 +1,33 @@
 <?php
-// اتصال بقاعدة البيانات
+
 $conn = new mysqli('localhost', 'root', '', 'amancom_db');
 
-// التحقق من الاتصال
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// جلب معرف العميل من الرابط
+// CLIENT LINK
 $client_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-// استعلام لجلب بيانات العميل
+// CLIENT DETAILS
 $client_query = "SELECT * FROM client_company WHERE Code = $client_id";
 $client_result = $conn->query($client_query);
 
-// التحقق من وجود العميل
+// CHECK IF THE CLIENT IS EXIST
 if ($client_result->num_rows > 0) {
     $client = $client_result->fetch_assoc();
 } else {
     die("Client not found.");
 }
 
-// استعلام لجلب الشرايح المرتبطة بالعميل
+// CLIENT'S SIMS
 $sims_query = "SELECT * FROM sim_card WHERE Company_Name = ?";
 $stmt = $conn->prepare($sims_query);
 $stmt->bind_param("s", $client['Name']);
 $stmt->execute();
 $sims_result = $stmt->get_result();
 
-// // استعلام لجلب الأجهزة المرتبطة بالعميل
+// // CLIENTS'S DEVICES
 // $devices_query = "SELECT device.*, sim_card.SIM_num FROM device 
 //                   LEFT JOIN sim_card ON device.SIM_Serial_no = sim_card.Serial_no 
 //                   WHERE device.Company_Name = ?";
