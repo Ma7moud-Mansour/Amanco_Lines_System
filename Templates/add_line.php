@@ -19,23 +19,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_line'])) {
     $service_provider = $_POST['service_provider'];
     $storage_or_sell = $_POST['storage_or_sell'];
     $company_name = $_POST['company_name'] ?? null;
+    $type = $_POST['type'] ?? null;
+
+    // حقول التاريخ
+    $Year = $_POST['Year'] ?? null;
+    $Month = $_POST['Month'] ?? null;
+    $Day = $_POST['Day'] ?? null;
 
     // التحقق من أن الرقم فريد
-    $check_sim_query = "SELECT * FROM sim_card WHERE SIM_num = ? UNION SELECT * FROM sim_card WHERE SIM_num = ?";
+    $check_sim_query = "SELECT * FROM sim_card WHERE SIM_num = ?";
     $stmt = $conn->prepare($check_sim_query);
-    $stmt->bind_param("ss", $sim_number, $sim_number);
+    $stmt->bind_param("s", $sim_number);
     $stmt->execute();
     $result = $stmt->get_result();
     if ($result->num_rows > 0) {
         $error_message = "This SIM Number already exists. Please use a unique SIM number.";
     }
+    if (!preg_match('/^\d+$/', $sim_number)) {
+        $error_message = "Please enter a valid SIM number.";
+    }
     $stmt->close();
 
     // التحقق من أن السيريال فريد
     if (empty($error_message)) {
-        $check_serial_query = "SELECT * FROM sim_card WHERE Serial_no = ? UNION SELECT * FROM sim_card WHERE Serial_no = ?";
+        $check_serial_query = "SELECT * FROM sim_card WHERE Serial_no = ?";
         $stmt = $conn->prepare($check_serial_query);
-        $stmt->bind_param("ss", $serial_no, $serial_no);
+        $stmt->bind_param("s", $serial_no);
         $stmt->execute();
         $result = $stmt->get_result();
         if ($result->num_rows > 0) {
@@ -44,24 +53,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_line'])) {
         $stmt->close();
     }
 
-    // إذا كان "Sell"، تحقق من وجود اسم الشركة في قاعدة البيانات
+    // إذا كان "Sell"، تحقق من الحقول الإضافية
     if ($storage_or_sell === 'sell' && empty($error_message)) {
-        $check_company_query = "SELECT * FROM client_company WHERE Name = ?";
-        $stmt = $conn->prepare($check_company_query);
-        $stmt->bind_param("s", $company_name);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        if ($result->num_rows === 0) {
-            $error_message = "The company name does not exist in the database. <br> Please Add this Client at first.";
+        if (empty($Year) || empty($Month) || empty($Day)) {
+            $error_message = "Please provide a valid sale date.";
+        } elseif (!checkdate((int)$Month, (int)$Day, (int)$Year)) {
+            $error_message = "The sale date is invalid. Please enter a valid date.";
+        } elseif (empty($type)) {
+            $error_message = "Please select a valid type for the SIM.";
+        } else {
+            $check_company_query = "SELECT * FROM client_company WHERE Name = ?";
+            $stmt = $conn->prepare($check_company_query);
+            $stmt->bind_param("s", $company_name);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            if ($result->num_rows === 0) {
+                $error_message = "The company name does not exist in the database. <br> Please add this client first.";
+            }
+            $stmt->close();
         }
-        $stmt->close();
     }
 
     // إذا لم يكن هناك أي خطأ، قم بالإدخال
     if (empty($error_message)) {
         if ($storage_or_sell === 'sell') {
-            $stmt = $conn->prepare("INSERT INTO sim_card (SIM_num, Serial_no, Service_Provider, Is_Sold, Company_Name) VALUES (?, ?, ?, 'sold', ?)");
-            $stmt->bind_param("ssss", $sim_number, $serial_no, $service_provider, $company_name);
+            $stmt = $conn->prepare("INSERT INTO sim_card (SIM_num, Serial_no, Service_Provider, Is_Sold, Type, Company_Name, Year, Month, Day) VALUES (?, ?, ?, 'sold', ?, ?, ?, ?, ?)");
+            $stmt->bind_param("ssssssii", $sim_number, $serial_no, $service_provider, $type, $company_name, $Year, $Month, $Day);
         } else {
             $stmt = $conn->prepare("INSERT INTO sim_card (SIM_num, Serial_no, Service_Provider, Is_Sold) VALUES (?, ?, ?, 'Available')");
             $stmt->bind_param("sss", $sim_number, $serial_no, $service_provider);
@@ -79,14 +96,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_line'])) {
 $conn->close();
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Add Line</title>
-<link rel="stylesheet" href="../Style/add_line.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Line</title>
+    <link rel="stylesheet" href="../Style/add_line.css" />
 </head>
 <body>
 <header>
@@ -119,23 +135,30 @@ $conn->close();
             <option value="WE">WE</option>
         </select>
         
-        <div class="form-group">
-            <label for="Is_Sold">Storage or Sell</label>
-            <select id="Is_Sold" name="storage_or_sell" class="choose-server" required>
-                <option value="store">Stored</option>
-                <option value="sell">Sell</option>
+        <label for="Is_Sold">Storage or Sell</label>
+        <select id="Is_Sold" name="storage_or_sell" required>
+            <option value="store">Stored</option>
+            <option value="sell">Sell</option>
+        </select>
+
+        <div id="type-container" style="display: none;">
+            <label for="type">SIM Type</label>
+            <select id="type" name="type">
+                <option value="data">Data</option>
+                <option value="voice">Voice</option>
             </select>
         </div>
 
-        <div class="form-group" id="company-name-container" style="display: none;">
+        <div id="company-name-container" style="display: none;">
             <label for="company_name">Company Name</label>
-            <input
-                type="text"
-                id="company_name"
-                name="company_name"
-                placeholder="Enter Company Name"
-                class="choose-server"
-            />
+            <input type="text" id="company_name" name="company_name" />
+        </div>
+
+        <div id="sale-date-container" style="display: none;">
+            <label for="sale_date">Sale Date</label>
+            <input type="number" id="Year" name="Year" placeholder="Year" min="1900" max="2100" />
+            <input type="number" id="Month" name="Month" placeholder="Month" min="1" max="12" />
+            <input type="number" id="Day" name="Day" placeholder="Day" min="1" max="31" />
         </div>
 
         <button type="submit" name="add_line">Add Line</button>
@@ -144,17 +167,19 @@ $conn->close();
 
 <script>
     const Is_SoldSelect = document.getElementById("Is_Sold");
+    const typeContainer = document.getElementById("type-container");
     const companyNameContainer = document.getElementById("company-name-container");
-    const companyNameInput = document.getElementById("company_name");
+    const saleDateContainer = document.getElementById("sale-date-container");
 
     Is_SoldSelect.addEventListener("change", function () {
         if (Is_SoldSelect.value === "sell") {
+            typeContainer.style.display = "block";
             companyNameContainer.style.display = "block";
-            companyNameInput.setAttribute("required", "required");
+            saleDateContainer.style.display = "block";
         } else {
+            typeContainer.style.display = "none";
             companyNameContainer.style.display = "none";
-            companyNameInput.removeAttribute("required");
-            companyNameInput.value = "";
+            saleDateContainer.style.display = "none";
         }
     });
 </script>

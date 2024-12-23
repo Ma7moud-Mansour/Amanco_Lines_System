@@ -16,17 +16,21 @@ $query = "
         company_name,
         Price,
         Service_Provider,
-        Is_Sold
+        Is_Sold,
+        Year,
+        Month,
+        Day
     FROM 
         sim_card
     WHERE 1=1
 ";
 
 // معالجة الفلاتر
-if (isset($_GET['status']) && $_GET['status'] !== 'all') {
-    $status = $conn->real_escape_string($_GET['status']);
-    $statusValue = $status === 'sold' ? '1' : '0'; // '1' يعني مباعة و '0' يعني متاحة
-    $query .= " AND `Is_Sold` = '$statusValue'";
+if (isset($_GET['Is_Sold']) && $_GET['Is_Sold'] !== 'all') {
+    $Is_Sold = strtolower($conn->real_escape_string($_GET['Is_Sold'])); // تحويل القيمة للحروف الصغيرة
+    if ($Is_Sold === 'sold' || $Is_Sold === 'available') {
+        $query .= " AND `Is_Sold` = '$Is_Sold'";
+    }
 }
 
 if (isset($_GET['type']) && $_GET['type'] !== 'all') {
@@ -63,7 +67,7 @@ if (!$result) {
         <nav>
             <ul>
                 <li><a href="Dashboard.php">Dashboard</a></li>
-                <li><a href="Line_Manegement.php" class="active" >Line Inventory</a></li>
+                <li><a href="Line_Manegement.php" class="active">Line Inventory</a></li>
                 <li><a href="add_customer.php">Add Customer</a></li>
             </ul>
         </nav>
@@ -74,8 +78,8 @@ if (!$result) {
             <h2>Filter Options</h2>
             <form method="GET" action="Line_Manegement.php">
                 <div>
-                    <label for="status">Filter by Status:</label>
-                    <select id="status" name="status">
+                    <label for="Is_Sold">Filter by Is_Sold:</label>
+                    <select id="Is_Sold" name="Is_Sold">
                         <option value="all">ALL</option>
                         <option value="available">Available</option>
                         <option value="sold">Sold</option>
@@ -112,6 +116,7 @@ if (!$result) {
                         <th>Price</th>
                         <th>Service Provider</th>
                         <th>Sale Status</th>
+                        <th>Sale Date</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -123,7 +128,14 @@ if (!$result) {
                             <td><?= htmlspecialchars($row['company_name']) ?></td>
                             <td><?= htmlspecialchars($row['Price']) ?></td>
                             <td><?= htmlspecialchars($row['Service_Provider']) ?></td>
-                            <td><?= htmlspecialchars($row['Is_Sold'] ) ?></td>
+                            <td><?= htmlspecialchars($row['Is_Sold']) ?></td>
+                            <td>
+                                <?php if (strtolower($row['Is_Sold']) === 'sold'): ?>
+                                    <?= htmlspecialchars($row['Day']) ?>/<?= htmlspecialchars($row['Month']) ?>/<?= htmlspecialchars($row['Year']) ?>
+                                <?php else: ?>
+                                    -
+                                <?php endif; ?>
+                            </td>
                         </tr>
                     <?php endwhile; ?>
                 </tbody>

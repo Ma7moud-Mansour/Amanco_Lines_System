@@ -22,15 +22,24 @@ if ($client_result->num_rows > 0) {
 }
 
 // استعلام لجلب الشرايح المرتبطة بالعميل
-$sims_query = "SELECT * FROM sim_card WHERE Serial_no = $client_id";
-$sims_result = $conn->query($sims_query);
+$sims_query = "SELECT * FROM sim_card WHERE Company_Name = ?";
+$stmt = $conn->prepare($sims_query);
+$stmt->bind_param("s", $client['Name']);
+$stmt->execute();
+$sims_result = $stmt->get_result();
 
-// استعلام لجلب الأجهزة المرتبطة بالعميل
-$devices_query = "SELECT device.*, sim_card.SIM_num FROM device 
-                  LEFT JOIN sim_card ON device.SIM_Serial_no = sim_card.Serial_no 
-                  WHERE device.Serial_no = $client_id";
-$devices_result = $conn->query($devices_query);
-?>
+// // استعلام لجلب الأجهزة المرتبطة بالعميل
+// $devices_query = "SELECT device.*, sim_card.SIM_num FROM device 
+//                   LEFT JOIN sim_card ON device.SIM_Serial_no = sim_card.Serial_no 
+//                   WHERE device.Company_Name = ?";
+// $stmt = $conn->prepare($devices_query);
+// $stmt->bind_param("s", $client['Name']);
+// $stmt->execute();
+// $devices_result = $stmt->get_result();
+// ?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,8 +56,9 @@ $devices_result = $conn->query($devices_query);
             <nav>
                 <a href="Dashboard.php">Dashboard</a>
                 <a href="Customer_Management.php" class="active">Customer Management</a>
-                <a href="Line_Management.php">Line Management</a>
+                <a href="Line_Manegement.php">Line Management</a>
             </nav>
+            <button id="darkModeToggle">Dark Mode</button>
         </header>
 
         <!-- Main Content -->
@@ -74,6 +84,7 @@ $devices_result = $conn->query($devices_query);
                                 <th>SIM Number</th>
                                 <th>Serial Number</th>
                                 <th>Sale Date</th>
+                                <th>Service Provider</th>
                                 <th>Device Serial</th>
                             </tr>
                         </thead>
@@ -82,8 +93,9 @@ $devices_result = $conn->query($devices_query);
                                 <tr>
                                     <td><?php echo $sim['SIM_num']; ?></td>
                                     <td><?php echo $sim['Serial_no']; ?></td>
-                                    <td><?php echo $sim['sale_date']; ?></td>
-                                    <td><?php echo $sim['device_serial'] ?: '-'; ?></td>
+                                    <td><?php echo $sim['Year']; ?></td>
+                                    <td><?php echo $sim['Service_Provider']; ?></td>
+                                    <td><?php echo $sim['Device_Serial'] ?: '-'; ?></td>
                                 </tr>
                             <?php endwhile; ?>
                         </tbody>
@@ -126,5 +138,26 @@ $devices_result = $conn->query($devices_query);
             <p>Contact us: amancom@amancom.com</p>
         </footer>
     </div>
+    <script>
+        // Dark Mode Toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const body = document.body;
+
+        // Check LocalStorage for Dark Mode
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            body.classList.add('dark-mode');
+        }
+
+        darkModeToggle.addEventListener('click', () => {
+            if (body.classList.contains('dark-mode')) {
+                body.classList.remove('dark-mode');
+                localStorage.setItem('darkMode', 'disabled');
+            } else {
+                body.classList.add('dark-mode');
+                localStorage.setItem('darkMode', 'enabled');
+            }
+        });
+    </script>
+
 </body>
 </html>
