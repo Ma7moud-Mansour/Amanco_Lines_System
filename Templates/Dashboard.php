@@ -154,21 +154,21 @@ $conn->close();
     <div class="statistics">
         <div class="stat">
             <div class="icon">
-                <img src="icons/sold-sim-icon.png" alt="Sold SIMs" />
+                <img src="../photos/sim.jpeg" alt="Sold SIMs" />
             </div>
             <h2><?php echo $sim_count; ?></h2>
             <p>Total SIMs Sold</p>
         </div>
         <div class="stat">
             <div class="icon">
-                <img src="icons/stored-sim-icon.png" alt="Stored SIMs" />
+                <img src="../photos/sim2.jpeg" alt="Stored SIMs" />
             </div>
             <h2><?php echo $stored_sims; ?></h2>
             <p>Total SIMs Stored</p>
         </div>
         <div class="stat">
             <div class="icon">
-                <img src="icons/company-icon.png" alt="Companies" />
+                <img src="../photos/company.png" alt="Companies" />
             </div>
             <h2><?php echo $company_count; ?></h2>
             <p>Total Companies</p>

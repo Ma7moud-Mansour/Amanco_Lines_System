@@ -46,7 +46,7 @@ margin: 0 10px;
 }
 
 header nav .active {
-color: #c4d82c;
+color: #337cd1;
 font-weight: bold;
 }
 
@@ -71,7 +71,7 @@ border-radius: 15px;
 form button {
 margin-top: 20px;
 padding: 10px 20px;
-background-color: #c4d82c;
+background-color: #337cd1;
 border: none;
 border-radius: 15px;
 cursor: pointer;
@@ -79,7 +79,7 @@ color: #fff;
 }
 
 form button:hover {
-background-color: #a8c424;
+background-color: #337cd1;
 }
 
 #sell-options {

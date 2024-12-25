@@ -41,7 +41,7 @@ header nav a {
   margin: 0 10px;
 }
 header nav .active {
-  color: #c4d82c;
+  color: #337cd1;
 }
 
 /* Main Content Styles */
@@ -93,14 +93,14 @@ main {
 .customer-form form button {
   margin-top: 15px;
   padding: 10px 20px;
-  background-color: #c4d82c;
+  background-color: #337cd1;
   border: none;
   border-radius: 50px;
   cursor: pointer;
   color: #fff;
 }
 .customer-form form button:hover {
-  background-color: #a8c424;
+  background-color: #337cd1;
 }
 .customer-form .customer-type {
   display: flex;
@@ -129,8 +129,13 @@ width: 100%;
   border-bottom: 4px solid #ddd;
 }
 .all-customers th {
-  background-color: #c4d82c;
+  background-color: #337cd1;
   color: #fff;
+}
+a.edit
+{
+  text-decoration: none;
+  color: #337cd1;
 }
 
 /* Footer Styles */

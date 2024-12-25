@@ -4,82 +4,79 @@ $username = "root";
 $password = ""; 
 $dbname = "amancom_db";
 
-
 $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_customer'])) {
-    $name = $_POST['name'];
-    $odoo_so = $_POST['odoo_so'];
-    $type = $_POST['type'];
-    $server = $_POST['server'];
-    $sim_serial = $_POST['sim_serial'];
-    $phone_number = isset($_POST['phone_number']) ? $_POST['phone_number'] : null;
+// Handle Add/Update Customer
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['add_customer'])) {
+        $name = $_POST['name'];
+        $odoo_so = $_POST['odoo_so'];
+        $type = $_POST['type'];
+        $server = $_POST['server'];
+        $sim_serial = $_POST['sim_serial'];
+        $phone_number = $_POST['phone_number'];
 
-    // BE SURE THE NUMBER FILS ISN'T EMPTY
-    if (empty($phone_number)) {
-        $error_message = "Error: Phone Number is required.";
-    } else {
-        // CHECK IF THE SERIAL IS ALREADE EXIST
-        $check_sim_query = "SELECT * FROM sim_inventory WHERE Serial_no = ?";
-        $stmt = $conn->prepare($check_sim_query);
-        $stmt->bind_param("s", $sim_serial);
+        // Add or Update Customer
+        $check_query = "SELECT * FROM client_company WHERE Odoo_SO = ?";
+        $stmt = $conn->prepare($check_query);
+        $stmt->bind_param("s", $odoo_so);
         $stmt->execute();
-        $sim_result = $stmt->get_result();
+        $result = $stmt->get_result();
 
-        if ($sim_result->num_rows === 0) {
-            $error_message = "Error: SIM Serial Number does not exist or is not available in SIM Inventory.";
-        } else {
-            // ODOO SO
-            $odoo_check_query = "SELECT * FROM odoo WHERE Odoo_SO = ?";
-            $stmt = $conn->prepare($odoo_check_query);
-            $stmt->bind_param("s", $odoo_so);
+        if ($result->num_rows > 0) {
+            // Update Existing Customer
+            $update_query = "UPDATE client_company SET Name = ?, Class = ?, Server_Name = ?, SIM_Serial_no = ?, Client_num = ? WHERE Odoo_SO = ?";
+            $stmt = $conn->prepare($update_query);
+            $stmt->bind_param("ssssss", $name, $type, $server, $sim_serial, $phone_number, $odoo_so);
             $stmt->execute();
-            $odoo_result = $stmt->get_result();
-
-            if ($odoo_result->num_rows === 0) {
-                // INSERT ODOO DETAILS
-                $insert_odoo_query = "INSERT INTO odoo (Odoo_SO) VALUES (?)";
-                $stmt = $conn->prepare($insert_odoo_query);
-                $stmt->bind_param("s", $odoo_so);
-                $stmt->execute();
-            }
-
-            // IF EVERY THING IS GOOD
+            $success_message = "Customer updated successfully!";
+        } else {
+            // Add New Customer
             $insert_query = "INSERT INTO client_company (Name, Odoo_SO, Class, Server_Name, SIM_Serial_no, Client_num) VALUES (?, ?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($insert_query);
             $stmt->bind_param("ssssss", $name, $odoo_so, $type, $server, $sim_serial, $phone_number);
-
-            if ($stmt->execute()) {
-                $success_message = "Customer added successfully!";
-                // UPDATE 
-                $update_sim_query = "UPDATE sim_inventory SET status = 'assigned' WHERE Serial_no = ?";
-                $stmt = $conn->prepare($update_sim_query);
-                $stmt->bind_param("s", $sim_serial);
-                $stmt->execute();
-            } else {
-                $error_message = "Error adding customer: " . $conn->error;
-            }
+            $stmt->execute();
+            $success_message = "Customer added successfully!";
         }
+        $stmt->close();
     }
-    if (isset($stmt)) {
+
+    // Handle Delete Customer
+    if (isset($_POST['delete_customer'])) {
+        $odoo_so = $_POST['odoo_so'];
+        $delete_query = "DELETE FROM client_company WHERE Odoo_SO = ?";
+        $stmt = $conn->prepare($delete_query);
+        $stmt->bind_param("s", $odoo_so);
+        $stmt->execute();
+        $success_message = "Customer deleted successfully!";
         $stmt->close();
     }
 }
 
-
+// Fetch Customers
 $query = "SELECT * FROM client_company";
 $result = $conn->query($query);
 
+// Fetch Customer for Edit
+$edit_customer = null;
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['edit_customer'])) {
+    $odoo_so = $_GET['edit_customer'];
+    $edit_query = "SELECT * FROM client_company WHERE Odoo_SO = ?";
+    $stmt = $conn->prepare($edit_query);
+    $stmt->bind_param("s", $odoo_so);
+    $stmt->execute();
+    $edit_result = $stmt->get_result();
+    if ($edit_result->num_rows > 0) {
+        $edit_customer = $edit_result->fetch_assoc();
+    }
+    $stmt->close();
+}
+
 $conn->close();
 ?>
-
-
-
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -91,7 +88,6 @@ $conn->close();
   </head>
   <body>
     <div class="container">
-      <!-- Header -->
       <header>
         <h1>AMANCOM</h1>
         <nav>
@@ -100,70 +96,42 @@ $conn->close();
           <a href="Line_Manegement.php">Line Management</a>
         </nav>
       </header>
-
-      <!-- Main Content -->
       <main>
         <div class="content">
-          <!-- Add/Update Customers -->
           <section class="customer-form">
             <h2>Add/Update Customers</h2>
             <?php if (isset($success_message)): ?>
               <p style="color: green;"><?php echo $success_message; ?></p>
             <?php endif; ?>
-            <?php if (isset($error_message)): ?>
-              <p style="color: red;"><?php echo $error_message; ?></p>
-            <?php endif; ?>
-
             <form id="customerForm" method="POST">
               <label for="name">Name</label>
-              <input type="text" id="name" name="name" required />
-
+              <input type="text" id="name" name="name" value="<?php echo $edit_customer['Name'] ?? ''; ?>" required />
               <label for="odoo_so">Odoo SO</label>
-              <input type="text" id="odoo_so" name="odoo_so" required />
-
-              <!-- <label for="sim_serial">SIM Serial Number</label>
-              <input type="text" id="sim_serial" name="sim_serial" required /> -->
-
+              <input type="text" id="odoo_so" name="odoo_so" value="<?php echo $edit_customer['Odoo_SO'] ?? ''; ?>" required <?php echo isset($edit_customer) ? 'readonly' : ''; ?> />
+              <label for="sim_serial">SIM Serial Number</label>
+              <input type="text" id="sim_serial" name="sim_serial" value="<?php echo $edit_customer['SIM_Serial_no'] ?? ''; ?>" required />
               <label for="phone_number">Phone Number</label>
-              <input type="text" id="phone_number" name="phone_number" required />
-
+              <input type="text" id="phone_number" name="phone_number" value="<?php echo $edit_customer['Client_num'] ?? ''; ?>" required />
               <label>Customer Type</label>
               <div class="customer-type">
-                  <input type="radio" id="large" name="type" value="Large Company" />
+                  <input type="radio" id="large" name="type" value="Large Company" <?php echo (isset($edit_customer) && $edit_customer['Class'] === 'Large Company') ? 'checked' : ''; ?> />
                   <label for="large">Large Company</label>
-                  <input type="radio" id="small" name="type" value="Small Client" />
+                  <input type="radio" id="small" name="type" value="Small Client" <?php echo (isset($edit_customer) && $edit_customer['Class'] === 'Small Client') ? 'checked' : ''; ?> />
                   <label for="small">Small Client</label>
               </div>
-              
-
               <div class="choose-server">
                   <label for="server">Associated Server</label>
                   <select id="server" name="server">
-                      <option value="itrack">itrack</option>
-                      <option value="fms">fms</option>
-                      <option value="track solid">track solid</option>
-                      <option value="pro track">pro track</option>
-                      <option value="whats gps">whats gps</option>
+                      <option value="itrack" <?php echo (isset($edit_customer) && $edit_customer['Server_Name'] === 'itrack') ? 'selected' : ''; ?>>itrack</option>
+                      <option value="fms" <?php echo (isset($edit_customer) && $edit_customer['Server_Name'] === 'fms') ? 'selected' : ''; ?>>fms</option>
+                      <option value="track solid" <?php echo (isset($edit_customer) && $edit_customer['Server_Name'] === 'track solid') ? 'selected' : ''; ?>>track solid</option>
+                      <option value="pro track" <?php echo (isset($edit_customer) && $edit_customer['Server_Name'] === 'pro track') ? 'selected' : ''; ?>>pro track</option>
+                      <option value="whats gps" <?php echo (isset($edit_customer) && $edit_customer['Server_Name'] === 'whats gps') ? 'selected' : ''; ?>>whats gps</option>
                   </select>
               </div>
-
-
-              <button type="submit" name="add_customer">Add Customer</button>
+              <button type="submit" name="add_customer">Add/Update Customer</button>
             </form>
-
-
-          
-          <?php if (isset($success_message)): ?>
-              <p style="color: green;"><?php echo $success_message; ?></p>
-          <?php endif; ?>
-          <?php if (isset($error_message)): ?>
-              <p style="color: red;"><?php echo $error_message; ?></p>
-          <?php endif; ?>
-
-
           </section>
-
-          <!-- All Customers List -->
           <section class="all-customers">
             <h2>All Customers</h2>
             <table>
@@ -173,6 +141,7 @@ $conn->close();
                   <th>Code</th>
                   <th>Customer Type</th>
                   <th>Associated Server</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -183,11 +152,18 @@ $conn->close();
                       <td><?php echo $row['Odoo_SO']; ?></td>
                       <td><?php echo $row['Class']; ?></td>
                       <td><?php echo $row['Server_Name']; ?></td>
+                      <td>
+                        <a class="edit" href="?edit_customer=<?php echo $row['Odoo_SO']; ?>" style="color: blue;">Edit</a>
+                        <form method="POST" style="display:inline;">
+                          <input type="hidden" name="odoo_so" value="<?php echo $row['Odoo_SO']; ?>" />
+                          <button type="submit" name="delete_customer" style="color: red;">Delete</button>
+                        </form>
+                      </td>
                     </tr>
                   <?php endwhile; ?>
                 <?php else: ?>
                   <tr>
-                    <td colspan="4">No customers found</td>
+                    <td colspan="5">No customers found</td>
                   </tr>
                 <?php endif; ?>
               </tbody>
@@ -198,7 +174,6 @@ $conn->close();
     </div>
     <footer>
       <p>&copy; 2023 Amancom. All rights reserved.</p>
-      <p>Contact us: amancom@amancom.com</p>
     </footer>
   </body>
 </html>

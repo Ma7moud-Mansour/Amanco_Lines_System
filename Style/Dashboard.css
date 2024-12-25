@@ -35,12 +35,17 @@ header nav a {
 }
 
 header nav .active {
-    color: #c4d82c;
+    color: #337cd1;
 }
 
 /* Main Content Styles */
 main {
     margin-top: 20px;
+}
+
+a.sName {
+    text-decoration: none;
+    color: #337cd1;
 }
 
 .container {

@@ -121,3 +121,50 @@ document.getElementById("updateCustomer").addEventListener("click", updateCustom
 
 // Initialize the page
 populateAllCustomers();
+// JavaScript: Add_customer.js
+
+// Wait for the DOM to load
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("customerForm");
+    const nameInput = document.getElementById("name");
+    const odooInput = document.getElementById("odoo_so");
+    const simSerialInput = document.getElementById("sim_serial");
+    const phoneInput = document.getElementById("phone_number");
+    const serverSelect = document.getElementById("server");
+
+    // Form validation
+    form.addEventListener("submit", (event) => {
+        // Prevent form submission if validation fails
+        let valid = true;
+
+        if (nameInput.value.trim() === "") {
+            alert("Name field cannot be empty!");
+            valid = false;
+        }
+
+        if (odooInput.value.trim() === "") {
+            alert("Odoo SO is required!");
+            valid = false;
+        }
+
+        if (simSerialInput.value.trim() === "") {
+            alert("SIM Serial Number is required!");
+            valid = false;
+        }
+
+        if (phoneInput.value.trim() === "") {
+            alert("Phone Number cannot be empty!");
+            valid = false;
+        }
+
+        if (!valid) {
+            event.preventDefault();
+        }
+    });
+
+    // Add interactivity: Display selected server
+    serverSelect.addEventListener("change", () => {
+        const selectedServer = serverSelect.options[serverSelect.selectedIndex].text;
+        console.log(`Server Selected: ${selectedServer}`);
+    });
+});
