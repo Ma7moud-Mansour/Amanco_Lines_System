@@ -91,7 +91,7 @@ header nav a {
 }
 
 header nav .active {
-  color: #c4d82c;
+  color: #337cd1;
   font-weight: bold;
 }
 
@@ -136,7 +136,7 @@ th, td {
 }
 
 th {
-  background-color: #c4d82c;
+  background-color: #337cd1;
   color: white;
 }
 

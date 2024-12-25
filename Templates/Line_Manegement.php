@@ -62,6 +62,7 @@ if (!$result) {
             <ul>
                 <li><a href="Dashboard.php">Dashboard</a></li>
                 <li><a href="Line_Manegement.php" class="active">Line Inventory</a></li>
+                <li><a href="add_line.php">Add Line</a></li>
                 <li><a href="add_customer.php">Add Customer</a></li>
             </ul>
         </nav>
@@ -72,7 +73,7 @@ if (!$result) {
             <h2>Filter Options</h2>
             <form method="GET" action="Line_Manegement.php">
                 <div>
-                    <label for="Is_Sold">Filter by Is_Sold:</label>
+                    <label for="Is_Sold">Filter by Sale Status:</label>
                     <select id="Is_Sold" name="Is_Sold">
                         <option value="all">ALL</option>
                         <option value="available">Available</option>

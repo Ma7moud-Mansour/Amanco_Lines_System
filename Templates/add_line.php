@@ -18,6 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_line'])) {
     $storage_or_sell = $_POST['storage_or_sell'];
     $company_name = $_POST['company_name'] ?? null;
     $type = $_POST['type'] ?? null;
+    $device_serial = $_POST['Device_Serial'];
 
     // DATE
     $Year = $_POST['Year'] ?? null;
@@ -75,8 +76,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_line'])) {
     // IF THERE IS NO ERROR GO INTO
     if (empty($error_message)) {
         if ($storage_or_sell === 'sell') {
-            $stmt = $conn->prepare("INSERT INTO sim_card (SIM_num, Serial_no, Service_Provider, Is_Sold, Type, Company_Name, Year, Month, Day) VALUES (?, ?, ?, 'sold', ?, ?, ?, ?, ?)");
-            $stmt->bind_param("ssssssii", $sim_number, $serial_no, $service_provider, $type, $company_name, $Year, $Month, $Day);
+            $stmt = $conn->prepare("INSERT INTO sim_card (SIM_num, Serial_no, Service_Provider, Is_Sold, Type, Device_Serial, Company_Name, Year, Month, Day) VALUES (?, ?, ?, 'sold', ?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("sssssssii", $sim_number, $serial_no, $service_provider, $type, $device_serial, $company_name, $Year, $Month, $Day);
         } else {
             $stmt = $conn->prepare("INSERT INTO sim_card (SIM_num, Serial_no, Service_Provider, Is_Sold) VALUES (?, ?, ?, 'Available')");
             $stmt->bind_param("sss", $sim_number, $serial_no, $service_provider);
@@ -147,6 +148,12 @@ $conn->close();
             </select>
         </div>
 
+        <div id="device-serial-container" style="display: none;">
+            <label for="Device_Serial">Device Serial Number</label>
+            <input type="text" id="Device_Serial" name="Device_Serial" placeholder="Enter Device Serial Number" />
+        </div>
+
+
         <div id="company-name-container" style="display: none;">
             <label for="company_name">Company Name</label>
             <input type="text" id="company_name" name="company_name" />
@@ -168,16 +175,20 @@ $conn->close();
     const typeContainer = document.getElementById("type-container");
     const companyNameContainer = document.getElementById("company-name-container");
     const saleDateContainer = document.getElementById("sale-date-container");
+    const deviceSerialContainer = document.getElementById("device-serial-container");
+
 
     Is_SoldSelect.addEventListener("change", function () {
         if (Is_SoldSelect.value === "sell") {
             typeContainer.style.display = "block";
             companyNameContainer.style.display = "block";
             saleDateContainer.style.display = "block";
+            deviceSerialContainer.style.display = "block";
         } else {
             typeContainer.style.display = "none";
             companyNameContainer.style.display = "none";
             saleDateContainer.style.display = "none";
+            deviceSerialContainer.style.display = "none";
         }
     });
 </script>

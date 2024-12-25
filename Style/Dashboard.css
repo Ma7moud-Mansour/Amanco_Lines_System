@@ -72,14 +72,14 @@ main {
 .search-bar button {
     padding: 10px 20px;
     border: none;
-    background-color: #c4d82c;
+    background-color: #337cd1;
     color: #fff;
     border-radius: 10px;
     cursor: pointer;
 }
 
 .search-bar button:hover {
-    background-color: #a8c424;
+    background-color: #337cd1;
 }
 
 /* Search Results Section */
@@ -103,7 +103,7 @@ main {
 }
 
 .tab-btn.active {
-    background-color: #c4d82c;
+    background-color: #337cd1;
 }
 
 .tab-content {
@@ -125,7 +125,7 @@ table {
 }
 
 thead {
-    background-color: #c4d82c;
+    background-color: #337cd1;
 }
 
 th, td {

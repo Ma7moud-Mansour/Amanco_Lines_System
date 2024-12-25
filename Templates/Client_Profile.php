@@ -138,24 +138,33 @@ $sims_result = $stmt->get_result();
         </footer>
     </div>
     <script>
-        // Dark Mode Toggle
-        const darkModeToggle = document.getElementById('darkModeToggle');
-        const body = document.body;
+        document.addEventListener('DOMContentLoaded', () => {
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            console.log(darkModeToggle); // يجب أن يطبع الزر
+            const body = document.body;
 
-        // Check LocalStorage for Dark Mode
-        if (localStorage.getItem('darkMode') === 'enabled') {
-            body.classList.add('dark-mode');
-        }
-
-        darkModeToggle.addEventListener('click', () => {
-            if (body.classList.contains('dark-mode')) {
-                body.classList.remove('dark-mode');
-                localStorage.setItem('darkMode', 'disabled');
-            } else {
+            // التحقق من الوضع المخزن في LocalStorage
+            if (localStorage.getItem('darkMode') === 'enabled') {
                 body.classList.add('dark-mode');
-                localStorage.setItem('darkMode', 'enabled');
+                darkModeToggle.textContent = "Light Mode";
+            } else {
+                darkModeToggle.textContent = "Dark Mode";
             }
+
+            // إضافة حدث عند الضغط على الزر
+            darkModeToggle.addEventListener('click', () => {
+                if (body.classList.contains('dark-mode')) {
+                    body.classList.remove('dark-mode');
+                    localStorage.setItem('darkMode', 'disabled');
+                    darkModeToggle.textContent = "Dark Mode";
+                } else {
+                    body.classList.add('dark-mode');
+                    localStorage.setItem('darkMode', 'enabled');
+                    darkModeToggle.textContent = "Light Mode";
+                }
+            });
         });
+
     </script>
 
 </body>
