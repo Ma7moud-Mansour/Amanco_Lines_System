@@ -1,5 +1,4 @@
 <?php
-// إعداد اتصال قاعدة البيانات
 $host = "localhost";
 $username = "root";
 $password = "";
@@ -11,14 +10,14 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// التحقق من إرسال النموذج لإضافة جهاز
+// Check
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $Serial_no = $_POST['Serial_no'];
     $Device_type = $_POST['Device_type'];
     $SIM_Serial_no = empty($_POST['SIM_Serial_no']) ? null : $_POST['SIM_Serial_no'];
     $company_name = $_POST['company_name'];
 
-    // التحقق من أن الرقم التسلسلي غير موجود في جدول الأجهزة
+    // Check if the serial is unieq
     $check_serial_query = "SELECT * FROM device WHERE Serial_no = ?";
     $stmt = $conn->prepare($check_serial_query);
     $stmt->bind_param("s", $Serial_no);
@@ -28,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($result->num_rows > 0) {
         echo "<script>alert('Device serial number already exists!');</script>";
     } else {
-        // جلب معرف الشركة
+        // Cpmany code
         $check_company_query = "SELECT Code FROM client_company WHERE name = ?";
         $stmt = $conn->prepare($check_company_query);
         $stmt->bind_param("s", $company_name);
@@ -41,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $company_row = $company_result->fetch_assoc();
             $client_id = $company_row['Code'];
 
-            // التحقق من إدخال الرقم التسلسلي لـ SIM
+            //SIM Serial check
             if (!empty($SIM_Serial_no)) {
                 $check_sim_query = "SELECT * FROM sim_card WHERE Serial_no = ?";
                 $stmt = $conn->prepare($check_sim_query);
@@ -55,13 +54,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
 
-            // إدخال الجهاز في جدول الأجهزة
+            // Insert the device
             $insert_device_query = "INSERT INTO device (Serial_no, Device_type, SIM_Serial_no, client_id) VALUES (?, ?, ?, ?)";
             $stmt = $conn->prepare($insert_device_query);
             $stmt->bind_param("sssi", $Serial_no, $Device_type, $SIM_Serial_no, $client_id);
 
             if ($stmt->execute()) {
-                // الانتقال إلى صفحة الاشتراك
+                // Go to Subscription page
                 header("Location: add_subscription.php?Serial_no=" . urlencode($Serial_no));
                 exit;
             } else {
@@ -79,90 +78,7 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add New Device</title>
-    <style>
-        /* General Styles */
-        html, body {
-            height: 100%;
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
-        }
-
-        .container {
-            width: 90%;
-            margin: auto;
-            background-color: white;
-            border-radius: 10px;
-            padding: 10px 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 20px;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        header h1 {
-            font-size: 24px;
-            margin: 0;
-        }
-
-        main {
-            margin-top: 20px;
-        }
-
-        section {
-            margin-bottom: 20px;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        h2 {
-            color: #333;
-            margin-bottom: 10px;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        label {
-            font-size: 16px;
-            color: #333;
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 10px;
-            font-size: 14px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-        }
-
-        button {
-            background-color: #337cd1;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #2859a9;
-        }
-    </style>
+    <link rel="stylesheet" href="../Style/add_device.css">
 </head>
 <body>
 <div class="container">
@@ -173,7 +89,7 @@ $conn->close();
         <section>
             <h2>Device Information</h2>
             <?php
-            // جلب قائمة الشركات
+            // Companies
             $host = "localhost";
             $username = "root";
             $password = "";
@@ -215,7 +131,7 @@ $conn->close();
         </section>
     </main>
     <footer>
-        <p>&copy; 2024 Your Company. All Rights Reserved.</p>
+        <p>&copy; 2024 AMANCOM. All Rights Reserved.</p>
     </footer>
 </div>
 </body>

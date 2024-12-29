@@ -1,5 +1,4 @@
 <?php
-// إعداد اتصال قاعدة البيانات
 $host = "localhost";
 $username = "root";
 $password = "";
@@ -11,7 +10,7 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// التحقق من إرسال النموذج للاشتراك
+// Check
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $Serial_no = $_GET['Serial_no'] ?? ''; // استلام السيريال من الصفحة السابقة
     $Odoo_SO = $_POST['Odoo_SO'] ?? '';
@@ -22,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $sub_Month = $_POST['sub_Month'] ?? '';
     $sub_Year = $_POST['sub_Year'] ?? '';
 
-    // تحقق من وجود Serial_no في الجهاز
+    // Check serial no
     if (!empty($Serial_no)) {
         $check_device_query = "SELECT * FROM device WHERE Serial_no = ?";
         $stmt = $conn->prepare($check_device_query);
@@ -36,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // إدراج البيانات في جدول server_subscription
+    //Insert data
     $insert_subscription_query = "INSERT INTO server_subscription 
                                     (Serial_no, Odoo_SO, Programm_Name, Subscription_Period, Subscription_Price, sub_Day, sub_Month, sub_Year) 
                                   VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
