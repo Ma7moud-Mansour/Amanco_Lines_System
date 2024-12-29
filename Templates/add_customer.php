@@ -19,27 +19,53 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $sim_serial = $_POST['sim_serial'];
         $phone_number = $_POST['phone_number'];
 
-        // Add or Update Customer
-        $check_query = "SELECT * FROM client_company WHERE Odoo_SO = ?";
-        $stmt = $conn->prepare($check_query);
-        $stmt->bind_param("s", $odoo_so);
+        // Check if customer name already exists
+        $check_name_query = "SELECT * FROM client_company WHERE Name = ?";
+        $stmt = $conn->prepare($check_name_query);
+        $stmt->bind_param("s", $name);
         $stmt->execute();
-        $result = $stmt->get_result();
+        $name_result = $stmt->get_result();
 
-        if ($result->num_rows > 0) {
-            // Update Existing Customer
-            $update_query = "UPDATE client_company SET Name = ?, Class = ?, Server_Name = ?, SIM_Serial_no = ?, Client_num = ? WHERE Odoo_SO = ?";
-            $stmt = $conn->prepare($update_query);
-            $stmt->bind_param("ssssss", $name, $type, $server, $sim_serial, $phone_number, $odoo_so);
-            $stmt->execute();
-            $success_message = "Customer updated successfully!";
+        if ($name_result->num_rows > 0) {
+            $error_message = "The customer name '$name' already exists. Please use a different name.";
         } else {
-            // Add New Customer
-            $insert_query = "INSERT INTO client_company (Name, Odoo_SO, Class, Server_Name, SIM_Serial_no, Client_num) VALUES (?, ?, ?, ?, ?, ?)";
-            $stmt = $conn->prepare($insert_query);
-            $stmt->bind_param("ssssss", $name, $odoo_so, $type, $server, $sim_serial, $phone_number);
+            // Check if Odoo_SO exists in 'odoo' table
+            $check_odoo = "SELECT * FROM odoo WHERE Odoo_SO = ?";
+            $stmt = $conn->prepare($check_odoo);
+            $stmt->bind_param("s", $odoo_so);
             $stmt->execute();
-            $success_message = "Customer added successfully!";
+            $odoo_result = $stmt->get_result();
+
+            if ($odoo_result->num_rows == 0) {
+                // Insert into odoo table if not exists
+                $insert_odoo = "INSERT INTO odoo (Odoo_SO) VALUES (?)";
+                $stmt = $conn->prepare($insert_odoo);
+                $stmt->bind_param("s", $odoo_so);
+                $stmt->execute();
+            }
+
+            // Add or Update Customer
+            $check_query = "SELECT * FROM client_company WHERE Odoo_SO = ?";
+            $stmt = $conn->prepare($check_query);
+            $stmt->bind_param("s", $odoo_so);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            if ($result->num_rows > 0) {
+                // Update Existing Customer
+                $update_query = "UPDATE client_company SET Name = ?, Class = ?, Server_Name = ?, SIM_Serial_no = ?, Client_num = ? WHERE Odoo_SO = ?";
+                $stmt = $conn->prepare($update_query);
+                $stmt->bind_param("ssssss", $name, $type, $server, $sim_serial, $phone_number, $odoo_so);
+                $stmt->execute();
+                $success_message = "Customer updated successfully!";
+            } else {
+                // Add New Customer
+                $insert_query = "INSERT INTO client_company (Name, Odoo_SO, Class, Server_Name, SIM_Serial_no, Client_num) VALUES (?, ?, ?, ?, ?, ?)";
+                $stmt = $conn->prepare($insert_query);
+                $stmt->bind_param("ssssss", $name, $odoo_so, $type, $server, $sim_serial, $phone_number);
+                $stmt->execute();
+                $success_message = "Customer added successfully!";
+            }
         }
         $stmt->close();
     }
@@ -77,6 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['edit_customer'])) {
 
 $conn->close();
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">

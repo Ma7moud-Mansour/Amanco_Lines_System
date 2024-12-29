@@ -1,13 +1,10 @@
 <?php
-// الاتصال بقاعدة البيانات
 $servername = "localhost";
 $username = "root";
 $password = "";
 $dbname = "amancom_db";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
-
-// التحقق من الاتصال
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
@@ -109,13 +106,14 @@ $conn->close();
         <a href="#" class="active">Dashboard</a>
         <a href="add_line.php">Add Line</a>
         <a href="add_customer.php">Add Customer</a>
+        <a href="Add_Device.php">Add Device</a>
         <a href="Line_Manegement.php">Line Inventory</a>
     </nav>
 </header>
 
 <div class="container">
 
-    <!-- Search Section -->
+    <!-- Search Bar -->
     <div class="search-bar">
         <form method="POST">
             <label for="company_name">Search Company Name:</label>

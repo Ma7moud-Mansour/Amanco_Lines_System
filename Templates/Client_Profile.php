@@ -1,7 +1,6 @@
 <?php
 
 $conn = new mysqli('localhost', 'root', '', 'amancom_db');
-
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
@@ -11,7 +10,7 @@ $client_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
 // CLIENT DETAILS
 $client_query = "SELECT * FROM client_company WHERE Code = $client_id";
-$client_result = $conn->query($client_query);
+$client_result = $conn->query(query: $client_query);
 
 // CHECK IF THE CLIENT IS EXIST
 if ($client_result->num_rows > 0) {
@@ -41,12 +40,14 @@ $sims_result = $stmt->get_result();
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Client Profile</title>
     <link rel="stylesheet" href="../Style/Client_Profile.css">
 </head>
+
 <body>
     <div class="container">
         <!-- Header -->
@@ -116,7 +117,7 @@ $sims_result = $stmt->get_result();
                             </tr>
                         </thead>
                         <tbody>
-                            <?php while ($device = $devices_result->fetch_assoc()): ?>
+                            <!-- <?php while ($device = $devices_result->fetch_assoc()): ?>
                                 <tr>
                                     <td><?php echo $device['serial']; ?></td>
                                     <td><?php echo $device['type']; ?></td>
@@ -125,7 +126,7 @@ $sims_result = $stmt->get_result();
                                     <td><?php echo $device['remaining_days']; ?></td>
                                     <td><?php echo $device['sim_number'] ?: '-'; ?></td>
                                 </tr>
-                            <?php endwhile; ?>
+                            <?php endwhile; ?> -->
                         </tbody>
                     </table>
                 </section>
@@ -168,4 +169,5 @@ $sims_result = $stmt->get_result();
     </script>
 
 </body>
+
 </html>

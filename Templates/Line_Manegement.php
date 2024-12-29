@@ -69,6 +69,7 @@ if (!$result) {
     </header>
 
     <main>
+        <!-- Filter Section -->
         <section class="filter-options">
             <h2>Filter Options</h2>
             <form method="GET" action="Line_Manegement.php">
@@ -98,6 +99,7 @@ if (!$result) {
                 <button type="submit">Apply Filters</button>
             </form>
         </section>
+        <!-- End Of Filter Section -->
 
         <section class="line-list">
             <h2>View Line List</h2>
