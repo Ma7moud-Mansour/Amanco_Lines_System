@@ -9,22 +9,22 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// استعلامات الإحصائيات
+//  Statistics
 $sim_count_query = "SELECT COUNT(*) FROM sim_card WHERE Is_Sold = 'sold'";
 $stored_sims_query = "SELECT COUNT(*) FROM sim_card WHERE Is_Sold = 'Available'";
 $company_count_query = "SELECT COUNT(*) FROM client_company";
 
-// تنفيذ الاستعلامات
+// do statitistics
 $sim_count_result = $conn->query($sim_count_query);
 $stored_sims_result = $conn->query($stored_sims_query);
 $company_count_result = $conn->query($company_count_query);
 
-// الحصول على القيم
+// Get values
 $sim_count = $sim_count_result->fetch_row()[0];
 $stored_sims = $stored_sims_result->fetch_row()[0];
 $company_count = $company_count_result->fetch_row()[0];
 
-// البحث عن اسم الشركة
+// Search company name
 $search_query = "";
 $search_results = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_company'])) {
