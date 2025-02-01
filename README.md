@@ -53,12 +53,6 @@ The system aims to address these challenges by achieving the following goals:
 
 The system is designed to streamline the company's operations, ensuring better data management, improved efficiency, and enhanced customer satisfaction and trust.
 
-## Team Members:
-- **Mahmoud Abdelkareem** (ID: 247518)
-- **Ahmed Salah** (ID: 247841)
-- **Anan Amr** (ID: 248153)
-- **Nourhan Diaa** (ID: 243667)
-
 ## How to Run the Project:
 1. Clone the repository to your local machine.
 2. Open the project in a web browser to access the system.
