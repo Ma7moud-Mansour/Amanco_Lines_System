@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        /* التصميم العام */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #fff;
+            overflow: hidden;
+            flex-direction: column; /* ترتيب العناصر عموديًا */
+        }
+
+        /* العنوان h1 */
+        h1 {
+            margin-bottom: 20px; /* مسافة بين العنوان وصندوق الدخول */
+            font-size: 32px;
+            font-weight: bold;
+            color: #fff;
+            text-align: center; /* لتوسيط النص أفقيًا */
+        }
+
+        /* تأثيرات الخلفية */
+        .background {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 10%, transparent 10%);
+            background-size: 20px 20px;
+            animation: moveBackground 10s linear infinite;
+        }
+
+        @keyframes moveBackground {
+            from { transform: translateY(0); }
+            to { transform: translateY(-200px); }
+        }
+
+        /* صندوق الدخول */
+        .login-box {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            width: 350px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .login-box h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .login-box input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 14px;
+            transition: background 0.3s ease;
+        }
+
+        .login-box input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .login-box input:focus {
+            background: rgba(255, 255, 255, 0.2);
+            outline: none;
+        }
+
+        .login-box button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            
+        }
+
+        .login-box button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
+        }
+
+        .login-box a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .login-box a:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+
+        .error-message {
+            color: #ff4d4d;
+            font-size: 14px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .login-box {
+                width: 90%;
+                padding: 20px;
+            }
+            .login-box h2 {
+                font-size: 20px;
+            }
+            h1 {
+                font-size: 24px; /* تصغير حجم العنوان على الشاشات الصغيرة */
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>!اهلا بيك في أمانكوم</h1>
+    <div class="background"></div>
+    <div class="login-box">
+        <h2>تسجيل الدخول</h2>
+        <form id="loginForm">
+            <input type="text" id="username" placeholder="اسم المستخدم" required>
+            <input type="password" id="password" placeholder="كلمة السر" required>
+            <button type="submit">دخول</button>
+            <div class="error-message" id="errorMessage">اسم المستخدم أو كلمة السر غير صحيحة!</div>
+        </form>
+        <a href="#">نسيت كلمة السر؟</a>
+    </div>
+
+    <script>
+        // التحقق من البيانات باستخدام JavaScript
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // لمنع إعادة تحميل الصفحة
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+
+            // بيانات الدخول الصحيحة (مثال)
+            const correctUsername = 'admin';
+            const correctPassword = '123456';
+
+            if (username === correctUsername && password === correctPassword) {
+                alert('تم الدخول بنجاح!');
+                errorMessage.style.display = 'none'; // إخفاء رسالة الخطأ
+                // توجيه المستخدم لصفحة أخرى (مثال)
+                window.location.href = 'dashboard.html';
+            } else {
+                errorMessage.style.display = 'block'; // عرض رسالة الخطأ
+            }
+        });
+    </script>
+</body>
+</html>
