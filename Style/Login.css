@@ -1,112 +1,136 @@
-body {
-    margin: 0;
-    font-family: 'Poppins', sans-serif;
-    background: #0f0f0f;
-    color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    overflow: hidden;
-  }
-  
-  .login-container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-  }
-  
-  .background-map {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: url('map-background.jpg') no-repeat center center/cover;
-    opacity: 0.3;
-    z-index: 1;
-  }
-  
-  .login-form {
-    position: relative;
-    z-index: 2;
-    background: rgba(15, 15, 15, 0.8);
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
-    width: 100%;
-    max-width: 400px;
-    text-align: center;
-  }
-  
-  .logo img {
-    width: 100px;
-    margin-bottom: 1rem;
-  }
-  
-  h2 {
-    margin-bottom: 1.5rem;
-    color: #00ffff;
-  }
-  
-  .input-group {
-    position: relative;
-    margin-bottom: 1.5rem;
-  }
-  
-  .input-group input {
-    width: 100%;
-    padding: 0.75rem;
-    background: transparent;
-    border: 1px solid #00ffff;
-    border-radius: 5px;
-    color: #fff;
-    font-size: 1rem;
-  }
-  
-  .input-group label {
-    position: absolute;
-    top: 0.75rem;
-    right: 1rem;
-    color: #00ffff;
-    transition: all 0.3s ease;
-  }
-  
-  .input-group input:focus + label,
-  .input-group input:not(:placeholder-shown) + label {
-    top: -0.75rem;
-    right: 0.5rem;
-    font-size: 0.8rem;
-    background: #0f0f0f;
-    padding: 0 0.25rem;
-  }
-  
-  button {
-    width: 100%;
-    padding: 0.75rem;
-    background: #00ffff;
-    color: #0f0f0f;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-  }
-  
-  button:hover {
-    background: #00cccc;
-  }
-  
-  .options {
-    margin-top: 1rem;
-  }
-  
-  .options a {
-    color: #00ffff;
-    text-decoration: none;
-    margin: 0 0.5rem;
-  }
-  
-  .options a:hover {
-    text-decoration: underline;
-  }
+        /* التصميم العام */
+        body {
+          margin: 0;
+          padding: 0;
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          background: linear-gradient(135deg, #1e3c72, #2a5298);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+          color: #fff;
+          overflow: hidden;
+          flex-direction: column; /* ترتيب العناصر عموديًا */
+      }
+
+      /* العنوان h1 */
+      h1 {
+          margin-bottom: 20px; /* مسافة بين العنوان وصندوق الدخول */
+          font-size: 32px;
+          font-weight: bold;
+          color: #fff;
+          text-align: center; /* لتوسيط النص أفقيًا */
+      }
+
+      /* تأثيرات الخلفية */
+      .background {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 10%, transparent 10%);
+          background-size: 20px 20px;
+          animation: moveBackground 10s linear infinite;
+      }
+
+      @keyframes moveBackground {
+          from { transform: translateY(0); }
+          to { transform: translateY(-200px); }
+      }
+
+      /* صندوق الدخول */
+      .login-box {
+          background: rgba(255, 255, 255, 0.1);
+          backdrop-filter: blur(10px);
+          border-radius: 20px;
+          padding: 40px;
+          width: 350px;
+          text-align: center;
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          animation: fadeIn 1s ease-in-out;
+      }
+
+      .login-box h2 {
+          margin-bottom: 20px;
+          font-size: 24px;
+          font-weight: bold;
+          color: #fff;
+      }
+
+      .login-box input {
+          width: 100%;
+          padding: 12px;
+          margin: 10px 0;
+          border: none;
+          border-radius: 10px;
+          background: rgba(255, 255, 255, 0.1);
+          color: #fff;
+          font-size: 14px;
+          transition: background 0.3s ease;
+      }
+
+      .login-box input::placeholder {
+          color: rgba(255, 255, 255, 0.7);
+      }
+
+      .login-box input:focus {
+          background: rgba(255, 255, 255, 0.2);
+          outline: none;
+      }
+
+      .login-box button {
+          width: 100%;
+          padding: 12px;
+          border: none;
+          border-radius: 10px;
+          background: linear-gradient(135deg, #007bff, #0056b3);
+          color: #fff;
+          font-size: 16px;
+          cursor: pointer;
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+          
+      }
+
+      .login-box button:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
+      }
+
+      .login-box a {
+          color: rgba(255, 255, 255, 0.8);
+          text-decoration: none;
+          font-size: 14px;
+          transition: color 0.3s ease;
+      }
+
+      .login-box a:hover {
+          color: #fff;
+          text-decoration: underline;
+      }
+
+      .error-message {
+          color: #ff4d4d;
+          font-size: 14px;
+          margin-top: 10px;
+          display: none;
+      }
+
+      /* Animations */
+      @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(-20px); }
+          to { opacity: 1; transform: translateY(0); }
+      }
+
+      /* Responsive Design */
+      @media (max-width: 600px) {
+          .login-box {
+              width: 90%;
+              padding: 20px;
+          }
+          .login-box h2 {
+              font-size: 20px;
+          }
+          h1 {
+              font-size: 24px; /* تصغير حجم العنوان على الشاشات الصغيرة */
+          }
+      }

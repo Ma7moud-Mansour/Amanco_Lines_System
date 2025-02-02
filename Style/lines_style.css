@@ -1,121 +1,183 @@
-/* General Reset */
-body, h2, p, ul, li {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+        /* التصميم العام */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #fff;
+            min-height: 100vh;
+            overflow-y: auto; /* السماح بالـ Scroll الرأسي */
+        }
 
-html, body {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    margin: 0;
-}
+        main {
+            padding: 20px;
+            flex: 1;
+            margin-top: 100px; /* علشان ميغطيش على الـ Header */
+            width: 90%;
+            max-width: 1200px;
+        }
+        
+        /* تأثيرات الخلفية */
+        .background {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 10%, transparent 10%);
+            background-size: 20px 20px;
+            animation: moveBackground 10s linear infinite;
+            z-index: -1;
+        }
 
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
-}
+        @keyframes moveBackground {
+            from { transform: translateY(0); }
+            to { transform: translateY(-200px); }
+        }
 
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #337cd1;
-    padding: 10px 20px;
-}
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin-bottom: 20px;
 
+            top: 5px;
+            z-index: 1000;
+        }
 
-header .logo {
-    font-weight: bold;
-    font-size: 20px;
-    color: #ffffff;
-}
+        header h1 {
+            font-size: 24px;
+            margin: 0;
+            color: #fff;
+        }
 
-header nav ul {
-    list-style: none;
-    display: flex;
-    gap: 15px;
-}
+        header nav a {
+            text-decoration: none;
+            color: #fff;
+            margin: 0 10px;
+            font-weight: bold;
+        }
 
-header nav a {
-    text-decoration: none;
-    color: rgb(255, 255, 255);
-}
+        header nav .active {
+            color: #007bff;
+        }
 
-main {
-    padding: 20px;
-    flex: 1;
-}
+        /* Main Content */
+        main {
+            padding: 20px;
+            flex: 1;
+            margin-top: 100px; /* علشان ميغطيش على الـ Header */
+            width: 90%;
+            max-width: 1200px;
+        }
 
-.line-list, .filter-options {
-    margin-bottom: 30px;
-}
+        .line-list, .filter-options {
+            margin-bottom: 30px;
+        }
 
-table {
-    width: 100%;
-    /* border-collapse: collapse; */
-    
-}
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
 
-thead {
-    background-color: #337cd1;
-}
+        thead {
+            background: rgba(255, 255, 255, 0.2);
+        }
 
-th, td {
-    border: 1px solid #ddd;
-    padding: 10px;
-    text-align: left;
-    border-radius: 10px;
-}
-th {
-    color: #f9f9f9;
-}
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
 
-.filter-options form {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
+        th {
+            color: #fff;
+            font-weight: bold;
+        }
 
-}
+        tbody tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
 
-.filter-options div {
-    display: flex;
-    flex-direction: column;
-}
+        /* Filter Options */
+        .filter-options form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
 
-select{
-    border-radius: 8px;
-}
+        .filter-options div {
+            display: flex;
+            flex-direction: column;
+        }
 
-input
-{
-    border-radius: 8px;
-}
+        .filter-options select, .filter-options input {
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 14px;
+            transition: background 0.3s ease;
+        }
 
-header nav .active {
-    color: #001b3b;
-}
+        .filter-options select:focus, .filter-options input:focus {
+            background: rgba(255, 255, 255, 0.2);
+            outline: none;
+        }
 
-button {
-    background-color: #337cd1;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-weight: bold;
-    border-radius: 10px;
-    color: #f9f9f9;
-}
+        .filter-options button {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 10px;
+            color: #fff;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
 
-button:hover{
-    background-color:#337cd1;
-    ;
-}
+        .filter-options button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
+        }
 
-footer {
-    text-align: center;
-    background-color: #f9f9f9;
-    padding: 20px;
-    font-size: 14px;
-    color: #555;
-}
+        /* Footer */
+        footer {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            font-size: 14px;
+            color: #fff;
+            width: 100%;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            main {
+                margin-top: 80px; /* تعديل المسافة علشان الشاشات الصغيرة */
+            }
+
+            header .logo {
+                font-size: 20px;
+            }
+
+            .filter-options form {
+                flex-direction: column;
+            }
+        }
