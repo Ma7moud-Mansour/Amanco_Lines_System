@@ -137,8 +137,8 @@ $conn->close();
               <input type="text" id="name" name="name" value="<?php echo $edit_customer['Name'] ?? ''; ?>" required />
               <label for="odoo_so">Odoo SO</label>
               <input type="text" id="odoo_so" name="odoo_so" value="<?php echo $edit_customer['Odoo_SO'] ?? ''; ?>" required <?php echo isset($edit_customer) ? 'readonly' : ''; ?> />
-              <label for="sim_serial">SIM Serial Number</label>
-              <input type="text" id="sim_serial" name="sim_serial" value="<?php echo $edit_customer['SIM_Serial_no'] ?? ''; ?>" required />
+              <!-- <label for="sim_serial">SIM Serial Number</label>
+              <input type="text" id="sim_serial" name="sim_serial" value="<?php echo $edit_customer['SIM_Serial_no'] ?? ''; ?>" required /> -->
               <label for="phone_number">Phone Number</label>
               <input type="text" id="phone_number" name="phone_number" value="<?php echo $edit_customer['Client_num'] ?? ''; ?>" required />
               <label>Customer Type</label>
