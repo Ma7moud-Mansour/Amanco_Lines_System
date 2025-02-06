@@ -15,8 +15,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $name = $_POST['name'];
         $odoo_so = $_POST['odoo_so'];
         $type = $_POST['type'];
-        $server = $_POST['server'];
-        $sim_serial = $_POST['sim_serial'];
+        $server = isset($_POST['server']) ? $_POST['server'] : null;
+        $sim_serial = isset($_POST['sim_serial']) ? $_POST['sim_serial'] : null;
         $phone_number = $_POST['phone_number'];
 
         // Check if customer name already exists
@@ -137,8 +137,8 @@ $conn->close();
               <input type="text" id="name" name="name" value="<?php echo $edit_customer['Name'] ?? ''; ?>" required />
               <label for="odoo_so">Odoo SO</label>
               <input type="text" id="odoo_so" name="odoo_so" value="<?php echo $edit_customer['Odoo_SO'] ?? ''; ?>" required <?php echo isset($edit_customer) ? 'readonly' : ''; ?> />
-              <!-- <label for="sim_serial">SIM Serial Number</label>
-              <input type="text" id="sim_serial" name="sim_serial" value="<?php echo $edit_customer['SIM_Serial_no'] ?? ''; ?>" required /> -->
+              <label for="sim_serial">SIM Serial Number</label>
+              <input type="text" id="sim_serial" name="sim_serial" value="<?php echo $edit_customer['SIM_Serial_no'] ?? ''; ?>" required />
               <label for="phone_number">Phone Number</label>
               <input type="text" id="phone_number" name="phone_number" value="<?php echo $edit_customer['Client_num'] ?? ''; ?>" required />
               <label>Customer Type</label>
@@ -148,7 +148,7 @@ $conn->close();
                   <input type="radio" id="small" name="type" value="Small Client" <?php echo (isset($edit_customer) && $edit_customer['Class'] === 'Small Client') ? 'checked' : ''; ?> />
                   <label for="small">Small Client</label>
               </div>
-              <!-- <div class="choose-server">
+              <div class="choose-server">
                   <label for="server">Associated Server</label>
                   <select id="server" name="server">
                       <option value="itrack" <?php echo (isset($edit_customer) && $edit_customer['Server_Name'] === 'itrack') ? 'selected' : ''; ?>>itrack</option>
@@ -157,7 +157,7 @@ $conn->close();
                       <option value="pro track" <?php echo (isset($edit_customer) && $edit_customer['Server_Name'] === 'pro track') ? 'selected' : ''; ?>>pro track</option>
                       <option value="whats gps" <?php echo (isset($edit_customer) && $edit_customer['Server_Name'] === 'whats gps') ? 'selected' : ''; ?>>whats gps</option>
                   </select>
-              </div> -->
+              </div>
               <button type="submit" name="add_customer">Add/Update Customer</button>
             </form>
           </section>
