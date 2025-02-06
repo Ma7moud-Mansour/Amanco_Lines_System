@@ -148,7 +148,7 @@ $conn->close();
                   <input type="radio" id="small" name="type" value="Small Client" <?php echo (isset($edit_customer) && $edit_customer['Class'] === 'Small Client') ? 'checked' : ''; ?> />
                   <label for="small">Small Client</label>
               </div>
-              <div class="choose-server">
+              <!-- <div class="choose-server">
                   <label for="server">Associated Server</label>
                   <select id="server" name="server">
                       <option value="itrack" <?php echo (isset($edit_customer) && $edit_customer['Server_Name'] === 'itrack') ? 'selected' : ''; ?>>itrack</option>
@@ -157,7 +157,7 @@ $conn->close();
                       <option value="pro track" <?php echo (isset($edit_customer) && $edit_customer['Server_Name'] === 'pro track') ? 'selected' : ''; ?>>pro track</option>
                       <option value="whats gps" <?php echo (isset($edit_customer) && $edit_customer['Server_Name'] === 'whats gps') ? 'selected' : ''; ?>>whats gps</option>
                   </select>
-              </div>
+              </div> -->
               <button type="submit" name="add_customer">Add/Update Customer</button>
             </form>
           </section>
