@@ -4,7 +4,6 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-
 $query = "
     SELECT 
         SIM_num,
@@ -53,20 +52,11 @@ if (!$result) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AMANCO</title>
     <link rel="stylesheet" href="../Style/lines_style.css">
+    <link rel="stylesheet" href="../Style/navbar.css">
     <script src="../JS/Add_customer.js" defer></script>
 </head>
 <body>
-    <header>
-        <div class="logo">AMANCOM</div>
-        <nav>
-            <ul>
-                <li><a href="Dashboard.php">Dashboard</a></li>
-                <li><a href="Line_Manegement.php" class="active">Line Inventory</a></li>
-                <li><a href="add_line.php">Add Line</a></li>
-                <li><a href="add_customer.php">Add Customer</a></li>
-            </ul>
-        </nav>
-    </header>
+    <?php include 'navbar.php'; ?>
 
     <main>
         <!-- Filter Section -->

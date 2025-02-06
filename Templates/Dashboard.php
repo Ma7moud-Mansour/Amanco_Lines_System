@@ -48,280 +48,60 @@ $conn->close();
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Dashboard</title>
 <link rel="stylesheet" href="../Style/Dashboard.css" />
+<link rel="stylesheet" href="../Style/navbar.css" />
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 /* Statistics Section */
-        /* التصميم العام */
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: #fff;
-            overflow: hidden;
-        }
+.statistics {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    gap: 20px;
+}
 
-        /* العنوان h1 */
-        h1 {
-            margin: 20px 0;
-            font-size: 32px;
-            font-weight: bold;
-            color: #fff;
-            text-align: center;
-        }
+.stat {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
 
-        /* تأثيرات الخلفية */
-        .background {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 10%, transparent 10%);
-            background-size: 20px 20px;
-            animation: moveBackground 10s linear infinite;
-            z-index: -1;
-        }
+.stat:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
 
-        @keyframes moveBackground {
-            from { transform: translateY(0); }
-            to { transform: translateY(-200px); }
-        }
+.stat h2 {
+    margin: 10px 0;
+    font-size: 2.5em;
+    color: #4CAF50;
+}
 
-        /* صندوق المحتوى */
-        .container {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 20px;
-            width: 90%;
-            max-width: 1200px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            animation: fadeIn 1s ease-in-out;
-        }
+.stat p {
+    margin: 0;
+    font-size: 1.2em;
+    color: #777;
+}
 
-        /* Header */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
+.icon {
+    margin-bottom: 15px;
+}
 
-        header h1 {
-            font-size: 1.5em;
-            margin: 0;
-        }
-
-        header nav a {
-            text-decoration: none;
-            color: #fff;
-            margin: 0 10px;
-            font-weight: bold;
-        }
-
-        header nav a.active {
-            color: #007bff;
-        }
-
-        /* Search Bar */
-        .search-bar {
-            margin-bottom: 20px;
-        }
-
-        .search-bar form {
-            display: flex;
-            gap: 10px;
-        }
-
-        .search-bar input {
-            flex: 1;
-            padding: 10px;
-            border: none;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
-            font-size: 14px;
-        }
-
-        .search-bar input::placeholder {
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .search-bar button {
-            padding: 10px 20px;
-            border: none;
-            background: linear-gradient(135deg, #007bff, #0056b3);
-            color: #fff;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .search-bar button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
-        }
-
-        /* Tabs */
-        .tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .tab-btn {
-            padding: 10px 20px;
-            border: none;
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background 0.3s ease;
-        }
-
-        .tab-btn.active {
-            background: linear-gradient(135deg, #007bff, #0056b3);
-        }
-
-        /* Tab Content */
-        .tab-content {
-            display: none;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 10px;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        /* Tables */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        th, td {
-            padding: 10px;
-            text-align: left;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        th {
-            background: rgba(255, 255, 255, 0.1);
-            font-weight: bold;
-        }
-
-        tbody tr:hover {
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        /* Statistics */
-        .statistics {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            gap: 20px;
-        }
-
-        .stat {
-            background: #ffffff;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            flex: 1;
-            text-align: center;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .stat:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        }
-
-        .stat h2 {
-            margin: 10px 0;
-            font-size: 2.5em;
-            color: #4CAF50;
-        }
-
-        .stat p {
-            margin: 0;
-            font-size: 1.2em;
-            color: #777;
-        }
-
-        .icon {
-            margin-bottom: 15px;
-        }
-
-        .icon img {
-            width: 50px;
-            height: 50px;
-            object-fit: contain;
-        }
-
-        .sName {
-            color: black;
-        }
-
-        /* Charts */
-        .charts {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .chart-container {
-            flex: 1;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 10px;
-        }
-
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .statistics, .charts {
-                flex-direction: column;
-            }
-
-            .container {
-                width: 95%;
-                padding: 10px;
-            }
-
-            h1 {
-                font-size: 24px;
-            }
-        }
+.icon img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+}
+.sName {
+    color:black;
+}
 </style>
 </head>
 <body>
-<header>
-    <h1>Dashboard</h1>
-    <nav>
-        <a href="#" class="active">Dashboard</a>
-        <a href="add_line.php">Add Line</a>
-        <a href="add_customer.php">Add Customer</a>
-        <a href="Add_Device.php">Add Device</a>
-        <a href="Line_Manegement.php">Line Inventory</a>
-        <button class="logout"><a href="Logout.php">Logout</a></button>
-    </nav>
-</header>
+    <?php include 'navbar.php'; ?>
 
 <div class="container">
 

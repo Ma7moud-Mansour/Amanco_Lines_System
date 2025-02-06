@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $programme_name = $_POST['programme_name'];
     $subscription_duration = $_POST['subscription_duration'];
     $subscription_price = $_POST['subscription_price'];
-    $subscription_date = $_POST['subscription_date'];
+    $subscription_date = date('Y-m-d'); // Set subscription date to current date
 
     // Check if device_no_serial exists in device table
     $check_device_query = "SELECT * FROM device WHERE device_no_serial = ?";
@@ -56,8 +56,11 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Server Subscription</title>
     <link rel="stylesheet" href="../Style/server_subscription.css" />
+    <link rel="stylesheet" href="../Style/navbar.css" />
 </head>
 <body>
+    <?php include 'navbar.php'; ?>
+
     <div class="container">
         <h1>Server Subscription</h1>
 
@@ -92,7 +95,7 @@ $conn->close();
             </div>
             <div class="form-group">
                 <label for="subscription_date">Subscription Date</label>
-                <input type="date" name="subscription_date" id="subscription_date" required>
+                <input type="date" name="subscription_date" id="subscription_date" value="<?php echo date('Y-m-d'); ?>" readonly>
             </div>
             <button type="submit">Add Subscription</button>
         </form>

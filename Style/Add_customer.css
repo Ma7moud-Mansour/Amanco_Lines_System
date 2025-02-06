@@ -1,239 +1,148 @@
-        /* التصميم العام */
-        body {
-          margin: 0;
-          padding: 0;
-          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-          background: linear-gradient(135deg, #1e3c72, #2a5298);
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          color: #fff;
-          overflow: hidden;
-          min-height: 100vh;
-      }
+/* General Styles */
+html, body {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #fff;
+  color: #333;
+}
+.container {
+  width: 90%;
+  margin: auto;
+  background-color: rgb(245, 245, 245);
+  margin: 2% 5%;
+  padding: 10px;
+  border-radius: 20px;
+}
 
-      /* تأثيرات الخلفية */
-      .background {
-          position: absolute;
-          width: 100%;
-          height: 100%;
-          background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 10%, transparent 10%);
-          background-size: 20px 20px;
-          animation: moveBackground 10s linear infinite;
-          z-index: -1;
-      }
+/* Header Styles */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 10px 10px 0 0;
+  background-color: #fff;
+  padding: 10px 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+header h1 {
+  font-size: 1.5em;
+  margin: 0;
+}
+header nav a {
+  text-decoration: none;
+  color: #333;
+  margin: 0 10px;
+}
+header nav .active {
+  color: #337cd1;
+}
 
-      @keyframes moveBackground {
-          from { transform: translateY(0); }
-          to { transform: translateY(-200px); }
-      }
+/* Main Content Styles */
+main {
+  margin-top: 20px;
+}
+.content {
+  display: flex;
+  gap: 20px; /* Adds spacing between sections */
+}
 
-      /* Header */
-      header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px 20px;
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 10px;
-        margin-bottom: 20px;
-    }
+/* Current Customer Section */
+.current-customer {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  max-width: 48%; /* Adjusts width */
+}
+.current-customer table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.current-customer th, .current-customer td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
 
-    header h1 {
-        font-size: 1.5em;
-        margin: 0;
-    }
+/* Add/Update Customer Form */
+.customer-form {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  max-width: 48%; /* Adjusts width */
+}
+.customer-form form label {
+  display: block;
+  margin-top: 10px;
+}
+.customer-form form input[type="text"] {
+  width: 90%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ddd;
+  border-radius: 30px;
+}
+.customer-form form button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background-color: #337cd1;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  color: #fff;
+}
+.customer-form form button:hover {
+  background-color: #337cd1;
+}
+.customer-form .customer-type {
+  display: flex;
+}
+.choose-server{
+padding: 10px;
+border: 1px solid #ddd;
+border-radius: 15px;
+width: 100%;
+}
+/* All Customers Section */
+.all-customers {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+.all-customers table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.all-customers th, .all-customers td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 4px solid #ddd;
+}
+.all-customers th {
+  background-color: #337cd1;
+  color: #fff;
+}
+a.edit
+{
+  text-decoration: none;
+  color: #337cd1;
+}
 
-    header nav a {
-        text-decoration: none;
-        color: #fff;
-        margin: 0 10px;
-        font-weight: bold;
-    }
-
-    header nav a.active {
-        color: #007bff;
-    }
-
-      /* صندوق المحتوى */
-      .container {
-          background: rgba(255, 255, 255, 0.1);
-          backdrop-filter: blur(10px);
-          border-radius: 20px;
-          padding: 40px;
-          width: 90%;
-          max-width: 1200px;
-          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          animation: fadeIn 1s ease-in-out;
-          margin-top: 100px; /* علشان ميغطيش على الـ Header */
-      }
-
-      /* Main Content */
-      main {
-          margin-top: 20px;
-      }
-
-      .content {
-          display: flex;
-          gap: 20px;
-      }
-
-      /* Current Customer Section */
-      .current-customer {
-          background: rgba(255, 255, 255, 0.1);
-          padding: 20px;
-          border-radius: 10px;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-          flex: 1;
-      }
-
-      .current-customer table {
-          width: 100%;
-          border-collapse: collapse;
-      }
-
-      .current-customer th, .current-customer td {
-          padding: 10px;
-          text-align: left;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      }
-
-      .current-customer th {
-          background: rgba(255, 255, 255, 0.2);
-          color: #fff;
-      }
-
-      /* Add/Update Customer Form */
-      .customer-form {
-          background: rgba(255, 255, 255, 0.1);
-          padding: 20px;
-          border-radius: 10px;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-          flex: 1;
-      }
-
-      .customer-form form label {
-          display: block;
-          margin-top: 10px;
-          color: #fff;
-      }
-
-      .customer-form form input[type="text"] {
-          width: 100%;
-          padding: 10px;
-          margin-top: 5px;
-          border: none;
-          border-radius: 10px;
-          background: rgba(255, 255, 255, 0.1);
-          color: #fff;
-          font-size: 14px;
-          transition: background 0.3s ease;
-      }
-
-      .customer-form form input[type="text"]:focus {
-          background: rgba(255, 255, 255, 0.2);
-          outline: none;
-      }
-
-      .customer-form form button {
-          margin-top: 15px;
-          padding: 10px 20px;
-          background: linear-gradient(135deg, #007bff, #0056b3);
-          border: none;
-          border-radius: 10px;
-          cursor: pointer;
-          color: #fff;
-          font-size: 16px;
-          transition: transform 0.3s ease, box-shadow 0.3s ease;
-      }
-
-      .customer-form form button:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
-      }
-
-      .customer-form .customer-type {
-          display: flex;
-          gap: 10px;
-      }
-
-      .choose-server {
-          padding: 10px;
-          border: none;
-          border-radius: 10px;
-          background: rgba(255, 255, 255, 0.1);
-          color: #fff;
-          font-size: 14px;
-          width: 100%;
-          transition: background 0.3s ease;
-      }
-
-      .choose-server:focus {
-          background: rgba(255, 255, 255, 0.2);
-          outline: none;
-      }
-
-      /* All Customers Section */
-      .all-customers {
-          background: rgba(255, 255, 255, 0.1);
-          padding: 20px;
-          border-radius: 10px;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-          margin-top: 20px;
-      }
-
-      .all-customers table {
-          width: 100%;
-          border-collapse: collapse;
-      }
-
-      .all-customers th, .all-customers td {
-          padding: 10px;
-          text-align: left;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      }
-
-      .all-customers th {
-          background: rgba(255, 255, 255, 0.2);
-          color: #fff;
-      }
-
-      a.edit {
-          text-decoration: none;
-          color: #007bff;
-      }
-
-      /* Footer */
-      footer {
-          text-align: center;
-          background: rgba(255, 255, 255, 0.1);
-          padding: 20px;
-          font-size: 14px;
-          color: #fff;
-          width: 100%;
-          margin-top: 20px;
-      }
-
-      /* Animations */
-      @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(-20px); }
-          to { opacity: 1; transform: translateY(0); }
-      }
-
-      /* Responsive Design */
-      @media (max-width: 768px) {
-          .content {
-              flex-direction: column;
-          }
-
-          .container {
-              width: 95%;
-              padding: 20px;
-              margin-top: 80px; /* تعديل المسافة علشان الشاشات الصغيرة */
-          }
-
-          header h1 {
-              font-size: 20px;
-          }
-      }
+/* Footer Styles */
+footer {
+  text-align: center;
+  background-color: #f9f9f9;
+  padding: 20px;
+  font-size: 14px;
+  color: #555;
+}

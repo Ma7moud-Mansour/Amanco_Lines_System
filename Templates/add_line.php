@@ -102,95 +102,89 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Add Line</title>
     <link rel="stylesheet" href="../Style/add_line.css" />
+    <link rel="stylesheet" href="../Style/navbar.css" />
 </head>
 <body>
-<header>
-    <h1>Add New Line</h1>
-    <nav>
-        <a href="Dashboard.php">Dashboard</a>
-        <a href="#" class="active">Add Line</a>
-        <a href="Line_Manegement.php">Lines Inventory</a>
-    </nav>
-</header>
-<div class="container">
-    <?php if (isset($success_message)): ?>
-        <p style="color: green;"><?php echo $success_message; ?></p>
-    <?php endif; ?>
-    <?php if (isset($error_message)): ?>
-        <p style="color: red;"><?php echo $error_message; ?></p>
-    <?php endif; ?>
-    <form method="POST">
-        <label for="sim_number">SIM Number</label>
-        <input type="text" id="sim_number" name="sim_number" required />
+    <?php include 'navbar.php'; ?>
+    <div class="container">
+        <?php if (isset($success_message)): ?>
+            <p style="color: green;"><?php echo $success_message; ?></p>
+        <?php endif; ?>
+        <?php if (isset($error_message)): ?>
+            <p style="color: red;"><?php echo $error_message; ?></p>
+        <?php endif; ?>
+        <form method="POST">
+            <label for="sim_number">SIM Number</label>
+            <input type="text" id="sim_number" name="sim_number" required />
 
-        <label for="serial_no">Serial Number</label>
-        <input type="text" id="serial_no" name="serial_no" required />
+            <label for="serial_no">Serial Number</label>
+            <input type="text" id="serial_no" name="serial_no" required />
 
-        <label for="service_provider">Service Provider</label>
-        <select id="service_provider" name="service_provider" required>
-            <option value="Vodafone">Vodafone</option>
-            <option value="Etisalat">Etisalat</option>
-            <option value="Orange">Orange</option>
-            <option value="WE">WE</option>
-        </select>
-        
-        <label for="Is_Sold">Storage or Sell</label>
-        <select id="Is_Sold" name="storage_or_sell" required>
-            <option value="store">Stored</option>
-            <option value="sell">Sell</option>
-        </select>
-
-        <div id="type-container" style="display: none;">
-            <label for="type">SIM Type</label>
-            <select id="type" name="type">
-                <option value="data">Data</option>
-                <option value="voice">Voice</option>
+            <label for="service_provider">Service Provider</label>
+            <select id="service_provider" name="service_provider" required>
+                <option value="Vodafone">Vodafone</option>
+                <option value="Etisalat">Etisalat</option>
+                <option value="Orange">Orange</option>
+                <option value="WE">WE</option>
             </select>
-        </div>
+            
+            <label for="Is_Sold">Storage or Sell</label>
+            <select id="Is_Sold" name="storage_or_sell" required>
+                <option value="store">Stored</option>
+                <option value="sell">Sell</option>
+            </select>
 
-        <div id="device-serial-container" style="display: none;">
-            <label for="Device_Serial">Device Serial Number</label>
-            <input type="text" id="Device_Serial" name="Device_Serial" placeholder="Enter Device Serial Number" />
-        </div>
+            <div id="type-container" style="display: none;">
+                <label for="type">SIM Type</label>
+                <select id="type" name="type">
+                    <option value="data">Data</option>
+                    <option value="voice">Voice</option>
+                </select>
+            </div>
 
-
-        <div id="company-name-container" style="display: none;">
-            <label for="company_name">Company Name</label>
-            <input type="text" id="company_name" name="company_name" />
-        </div>
-
-        <div id="sale-date-container" style="display: none;">
-            <label for="sale_date">Sale Date</label>
-            <input type="number" id="Year" name="Year" placeholder="Year" min="1900" max="2100" />
-            <input type="number" id="Month" name="Month" placeholder="Month" min="1" max="12" />
-            <input type="number" id="Day" name="Day" placeholder="Day" min="1" max="31" />
-        </div>
-
-        <button type="submit" name="add_line">Add Line</button>
-    </form>
-</div>
-
-<script>
-    const Is_SoldSelect = document.getElementById("Is_Sold");
-    const typeContainer = document.getElementById("type-container");
-    const companyNameContainer = document.getElementById("company-name-container");
-    const saleDateContainer = document.getElementById("sale-date-container");
-    const deviceSerialContainer = document.getElementById("device-serial-container");
+            <div id="device-serial-container" style="display: none;">
+                <label for="Device_Serial">Device Serial Number</label>
+                <input type="text" id="Device_Serial" name="Device_Serial" placeholder="Enter Device Serial Number" />
+            </div>
 
 
-    Is_SoldSelect.addEventListener("change", function () {
-        if (Is_SoldSelect.value === "sell") {
-            typeContainer.style.display = "block";
-            companyNameContainer.style.display = "block";
-            saleDateContainer.style.display = "block";
-            deviceSerialContainer.style.display = "block";
-        } else {
-            typeContainer.style.display = "none";
-            companyNameContainer.style.display = "none";
-            saleDateContainer.style.display = "none";
-            deviceSerialContainer.style.display = "none";
-        }
-    });
-</script>
+            <div id="company-name-container" style="display: none;">
+                <label for="company_name">Company Name</label>
+                <input type="text" id="company_name" name="company_name" />
+            </div>
+
+            <div id="sale-date-container" style="display: none;">
+                <label for="sale_date">Sale Date</label>
+                <input type="number" id="Year" name="Year" placeholder="Year" min="1900" max="2100" />
+                <input type="number" id="Month" name="Month" placeholder="Month" min="1" max="12" />
+                <input type="number" id="Day" name="Day" placeholder="Day" min="1" max="31" />
+            </div>
+
+            <button type="submit" name="add_line">Add Line</button>
+        </form>
+    </div>
+
+    <script>
+        const Is_SoldSelect = document.getElementById("Is_Sold");
+        const typeContainer = document.getElementById("type-container");
+        const companyNameContainer = document.getElementById("company-name-container");
+        const saleDateContainer = document.getElementById("sale-date-container");
+        const deviceSerialContainer = document.getElementById("device-serial-container");
+
+
+        Is_SoldSelect.addEventListener("change", function () {
+            if (Is_SoldSelect.value === "sell") {
+                typeContainer.style.display = "block";
+                companyNameContainer.style.display = "block";
+                saleDateContainer.style.display = "block";
+                deviceSerialContainer.style.display = "block";
+            } else {
+                typeContainer.style.display = "none";
+                companyNameContainer.style.display = "none";
+                saleDateContainer.style.display = "none";
+                deviceSerialContainer.style.display = "none";
+            }
+        });
+    </script>
 </body>
 </html>

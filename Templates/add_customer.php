@@ -112,8 +112,10 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Customer Management</title>
     <link rel="stylesheet" href="../Style/Add_customer.css" />
+    <link rel="stylesheet" href="../Style/navbar.css" />
   </head>
   <body>
+    <?php include 'navbar.php'; ?>
     <div class="container">
       <header>
         <h1>AMANCOM</h1>

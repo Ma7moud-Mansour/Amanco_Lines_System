@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     (Serial_no, Odoo_SO, Programm_Name, Subscription_Period, Subscription_Price, sub_Day, sub_Month, sub_Year) 
                                   VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($insert_subscription_query);
-    $stmt->bind_param("isssdiii", $Serial_no, $Odoo_SO, $Programm_Name, $Subscription_Period, $Subscription_Price, $sub_Day, $sub_Month, $sub_Year);
+    $stmt->bind_param("ssssssii", $Serial_no, $Odoo_SO, $Programm_Name, $Subscription_Period, $Subscription_Price, $sub_Day, $sub_Month, $sub_Year);
 
     if ($stmt->execute()) {
         echo "<script>alert('Subscription added successfully!'); window.location.href = 'next_page.php';</script>";
@@ -59,8 +59,10 @@ $conn->close();
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Add Subscription</title>
   <link rel="stylesheet" href="../Style/add_subscription.css">
+  <link rel="stylesheet" href="../Style/navbar.css">
 </head>
 <body>
+  <?php include 'navbar.php'; ?>
   <div class="container">
     <header>
       <h1>Add Subscription</h1>

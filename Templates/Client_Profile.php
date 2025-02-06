@@ -10,7 +10,7 @@ $client_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
 // CLIENT DETAILS
 $client_query = "SELECT * FROM client_company WHERE Code = $client_id";
-$client_result = $conn->query(query: $client_query);
+$client_result = $conn->query($client_query);
 
 // CHECK IF THE CLIENT IS EXIST
 if ($client_result->num_rows > 0) {
@@ -35,8 +35,6 @@ $sims_result = $stmt->get_result();
 // $stmt->execute();
 // $devices_result = $stmt->get_result();
 // ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
