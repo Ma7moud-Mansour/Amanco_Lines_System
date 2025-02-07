@@ -5,6 +5,23 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+// Check and add missing columns
+$required_columns = [
+    'Server_Name' => 'VARCHAR(255)',
+    'Programme_Name' => 'VARCHAR(255)',
+    'Subscription_Date' => 'DATE',
+    'Subscription_Duration' => 'INT',
+    'Subscription_Price' => 'DECIMAL(10,2)'
+];
+
+foreach ($required_columns as $column => $type) {
+    $check_column = $conn->query("SHOW COLUMNS FROM `devices` LIKE '$column'");
+    if ($check_column->num_rows === 0) {
+        $alter_query = "ALTER TABLE `devices` ADD `$column` $type";
+        $conn->query($alter_query);
+    }
+}
+
 // CLIENT LINK
 $client_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
@@ -26,8 +43,13 @@ $stmt->bind_param("s", $client['Name']);
 $stmt->execute();
 $sims_result = $stmt->get_result();
 
-// CLIENT'S DEVICES
-$devices_query = "SELECT devices.*, sim_card.SIM_num FROM devices 
+// Update the devices query to use Programme_Name instead of Server_Name
+$devices_query = "SELECT devices.*, sim_card.SIM_num, 
+                  IFNULL(devices.Programme_Name, '-') AS Server_Name, 
+                  DATE_FORMAT(devices.Subscription_Date, '%Y-%m-%d') AS Subscription_Date, 
+                  IFNULL(DATEDIFF(DATE_ADD(devices.Subscription_Date, 
+                    INTERVAL devices.Subscription_Duration MONTH), CURDATE()), '-') AS Remaining_Days 
+                  FROM devices 
                   LEFT JOIN sim_card ON devices.SIM_Serial_no = sim_card.Serial_no 
                   WHERE devices.Company_name = ?";
 $stmt = $conn->prepare($devices_query);
@@ -119,9 +141,9 @@ $devices_result = $stmt->get_result();
                                 <tr>
                                     <td><?php echo $device['Serial_no']; ?></td>
                                     <td><?php echo $device['Device_type']; ?></td>
-                                    <td><?php echo isset($device['Server_Name']) ? $device['Server_Name'] : '-'; ?></td>
-                                    <td><?php echo isset($device['Subscription_Date']) ? $device['Subscription_Date'] : '-'; ?></td>
-                                    <td><?php echo isset($device['Remaining_Days']) ? $device['Remaining_Days'] : '-'; ?></td>
+                                    <td><?php echo $device['Server_Name']; ?></td>
+                                    <td><?php echo $device['Subscription_Date']; ?></td>
+                                    <td><?php echo $device['Remaining_Days']; ?></td>
                                     <td><?php echo $device['SIM_num'] ?: '-'; ?></td>
                                 </tr>
                             <?php endwhile; ?>
