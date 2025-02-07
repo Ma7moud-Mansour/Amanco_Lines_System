@@ -12,7 +12,7 @@ $client_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 $client_query = "SELECT * FROM client_company WHERE Code = $client_id";
 $client_result = $conn->query($client_query);
 
-// CHECK IF THE CLIENT IS EXIST
+// CHECK IF THE CLIENT EXISTS
 if ($client_result->num_rows > 0) {
     $client = $client_result->fetch_assoc();
 } else {
@@ -26,15 +26,15 @@ $stmt->bind_param("s", $client['Name']);
 $stmt->execute();
 $sims_result = $stmt->get_result();
 
-// // CLIENTS'S DEVICES
-// $devices_query = "SELECT device.*, sim_card.SIM_num FROM device 
-//                   LEFT JOIN sim_card ON device.SIM_Serial_no = sim_card.Serial_no 
-//                   WHERE device.Company_Name = ?";
-// $stmt = $conn->prepare($devices_query);
-// $stmt->bind_param("s", $client['Name']);
-// $stmt->execute();
-// $devices_result = $stmt->get_result();
-// ?>
+// CLIENT'S DEVICES
+$devices_query = "SELECT devices.*, sim_card.SIM_num FROM devices 
+                  LEFT JOIN sim_card ON devices.SIM_Serial_no = sim_card.Serial_no 
+                  WHERE devices.Company_name = ?";
+$stmt = $conn->prepare($devices_query);
+$stmt->bind_param("s", $client['Name']);
+$stmt->execute();
+$devices_result = $stmt->get_result();
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -115,16 +115,16 @@ $sims_result = $stmt->get_result();
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- <?php while ($device = $devices_result->fetch_assoc()): ?>
+                            <?php while ($device = $devices_result->fetch_assoc()): ?>
                                 <tr>
-                                    <td><?php echo $device['serial']; ?></td>
-                                    <td><?php echo $device['type']; ?></td>
-                                    <td><?php echo $device['server_name']; ?></td>
-                                    <td><?php echo $device['subscription_date']; ?></td>
-                                    <td><?php echo $device['remaining_days']; ?></td>
-                                    <td><?php echo $device['sim_number'] ?: '-'; ?></td>
+                                    <td><?php echo $device['Serial_no']; ?></td>
+                                    <td><?php echo $device['Device_type']; ?></td>
+                                    <td><?php echo isset($device['Server_Name']) ? $device['Server_Name'] : '-'; ?></td>
+                                    <td><?php echo isset($device['Subscription_Date']) ? $device['Subscription_Date'] : '-'; ?></td>
+                                    <td><?php echo isset($device['Remaining_Days']) ? $device['Remaining_Days'] : '-'; ?></td>
+                                    <td><?php echo $device['SIM_num'] ?: '-'; ?></td>
                                 </tr>
-                            <?php endwhile; ?> -->
+                            <?php endwhile; ?>
                         </tbody>
                     </table>
                 </section>
