@@ -120,7 +120,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 
                 $message = "Device registered successfully with subscription!";
             } else {
-                $message = "Error: " . $conn->error;
+                $message = "Error: " . $stmt->error;
             }
         }
     }

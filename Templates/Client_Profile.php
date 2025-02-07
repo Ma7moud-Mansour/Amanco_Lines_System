@@ -43,12 +43,22 @@ $stmt->bind_param("s", $client['Name']);
 $stmt->execute();
 $sims_result = $stmt->get_result();
 
-// Update the devices query to use Programme_Name instead of Server_Name
+// Update the devices query to format the date properly
 $devices_query = "SELECT devices.*, sim_card.SIM_num, 
                   IFNULL(devices.Programme_Name, '-') AS Server_Name, 
-                  DATE_FORMAT(devices.Subscription_Date, '%Y-%m-%d') AS Subscription_Date, 
-                  IFNULL(DATEDIFF(DATE_ADD(devices.Subscription_Date, 
-                    INTERVAL devices.Subscription_Duration MONTH), CURDATE()), '-') AS Remaining_Days 
+                  CASE 
+                      WHEN devices.Subscription_Date IS NULL OR devices.Subscription_Date = '0000-00-00' 
+                      THEN '-'
+                      ELSE DATE_FORMAT(devices.Subscription_Date, '%Y-%m-%d')
+                  END AS Subscription_Date,
+                  CASE 
+                      WHEN devices.Subscription_Date IS NULL OR devices.Subscription_Date = '0000-00-00' 
+                      THEN '-'
+                      WHEN devices.Subscription_Duration IS NULL 
+                      THEN '-'
+                      ELSE DATEDIFF(DATE_ADD(devices.Subscription_Date, 
+                           INTERVAL devices.Subscription_Duration MONTH), CURDATE())
+                  END AS Remaining_Days 
                   FROM devices 
                   LEFT JOIN sim_card ON devices.SIM_Serial_no = sim_card.Serial_no 
                   WHERE devices.Company_name = ?";
@@ -93,6 +103,7 @@ $devices_result = $stmt->get_result();
                         <p><strong>SO Code:</strong> <?php echo $client['Odoo_SO']; ?></p>
                         <p><strong>Client Numbers:</strong> <?php echo $client['Client_num']; ?></p>
                     </div>
+                    <button id="editButton">Edit</button>
                 </section>
 
                 <!-- SIM Cards List -->
@@ -134,6 +145,7 @@ $devices_result = $stmt->get_result();
                                 <th>Subscription Date</th>
                                 <th>Remaining Days</th>
                                 <th>SIM Number</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -145,6 +157,7 @@ $devices_result = $stmt->get_result();
                                     <td><?php echo $device['Subscription_Date']; ?></td>
                                     <td><?php echo $device['Remaining_Days']; ?></td>
                                     <td><?php echo $device['SIM_num'] ?: '-'; ?></td>
+                                    <td><a href="edit_device.php?id=<?php echo $device['id']; ?>">Edit</a></td>
                                 </tr>
                             <?php endwhile; ?>
                         </tbody>
@@ -183,6 +196,11 @@ $devices_result = $stmt->get_result();
                     localStorage.setItem('darkMode', 'enabled');
                     darkModeToggle.textContent = "Light Mode";
                 }
+            });
+
+            const editButton = document.getElementById('editButton');
+            editButton.addEventListener('click', () => {
+                window.location.href = `edit_client.php?id=<?php echo $client_id; ?>`;
             });
         });
 
